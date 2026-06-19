@@ -1,59 +1,87 @@
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
-import { AuthProvider, useAuth } from '@/lib/AuthContext';
-import UserNotRegisteredError from '@/components/UserNotRegisteredError';
+import { AuthProvider } from '@/lib/AuthContext';
 import ScrollToTop from './components/ScrollToTop';
-// Add page imports here
 
-const AuthenticatedApp = () => {
-  const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
+// Splash
+import Splash from '@/pages/Splash';
 
-  // Show loading spinner while checking app public settings or auth
-  if (isLoadingPublicSettings || isLoadingAuth) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
-      </div>
-    );
-  }
+// Customer
+import CustomerHome from '@/pages/customer/CustomerHome';
+import CustomerSearch from '@/pages/customer/CustomerSearch';
+import VendorDetail from '@/pages/customer/VendorDetail';
+import Checkout from '@/pages/customer/Checkout';
+import OrderTracking from '@/pages/customer/OrderTracking';
+import CustomerOrders from '@/pages/customer/CustomerOrders';
+import CustomerProfile from '@/pages/customer/CustomerProfile';
+import ErrandRequestPage from '@/pages/customer/ErrandRequest';
 
-  // Handle authentication errors
-  if (authError) {
-    if (authError.type === 'user_not_registered') {
-      return <UserNotRegisteredError />;
-    } else if (authError.type === 'auth_required') {
-      // Redirect to login automatically
-      navigateToLogin();
-      return null;
-    }
-  }
+// Vendor
+import VendorOrders from '@/pages/vendor/VendorOrders';
+import VendorMenu from '@/pages/vendor/VendorMenu';
+import VendorEarnings from '@/pages/vendor/VendorEarnings';
+import VendorProfile from '@/pages/vendor/VendorProfile';
 
-  // Render the main app
-  return (
-    <Routes>
-      {/* Add your page Route elements here */}
-      <Route path="*" element={<PageNotFound />} />
-    </Routes>
-  );
-};
+// Runner
+import RunnerHome from '@/pages/runner/RunnerHome';
+import RunnerJobs from '@/pages/runner/RunnerJobs';
+import RunnerEarnings from '@/pages/runner/RunnerEarnings';
+import RunnerProfile from '@/pages/runner/RunnerProfile';
 
+// Admin
+import AdminDashboard from '@/pages/admin/AdminDashboard';
+import AdminOrders from '@/pages/admin/AdminOrders';
+import AdminUsers from '@/pages/admin/AdminUsers';
+import AdminSettings from '@/pages/admin/AdminSettings';
 
 function App() {
-
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
         <Router>
           <ScrollToTop />
-          <AuthenticatedApp />
+          <Routes>
+            {/* Splash */}
+            <Route path="/" element={<Splash />} />
+
+            {/* Customer */}
+            <Route path="/customer/home" element={<CustomerHome />} />
+            <Route path="/customer/search" element={<CustomerSearch />} />
+            <Route path="/customer/vendor/:id" element={<VendorDetail />} />
+            <Route path="/customer/checkout" element={<Checkout />} />
+            <Route path="/customer/order-tracking" element={<OrderTracking />} />
+            <Route path="/customer/orders" element={<CustomerOrders />} />
+            <Route path="/customer/profile" element={<CustomerProfile />} />
+            <Route path="/customer/errand" element={<ErrandRequestPage />} />
+
+            {/* Vendor */}
+            <Route path="/vendor/orders" element={<VendorOrders />} />
+            <Route path="/vendor/menu" element={<VendorMenu />} />
+            <Route path="/vendor/earnings" element={<VendorEarnings />} />
+            <Route path="/vendor/profile" element={<VendorProfile />} />
+
+            {/* Runner */}
+            <Route path="/runner/home" element={<RunnerHome />} />
+            <Route path="/runner/jobs" element={<RunnerJobs />} />
+            <Route path="/runner/earnings" element={<RunnerEarnings />} />
+            <Route path="/runner/profile" element={<RunnerProfile />} />
+
+            {/* Admin */}
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/orders" element={<AdminOrders />} />
+            <Route path="/admin/users" element={<AdminUsers />} />
+            <Route path="/admin/settings" element={<AdminSettings />} />
+
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
         </Router>
         <Toaster />
       </QueryClientProvider>
     </AuthProvider>
-  )
+  );
 }
 
-export default App
+export default App;
