@@ -18,6 +18,7 @@ import OrderTracking from '@/pages/customer/OrderTracking';
 import CustomerOrders from '@/pages/customer/CustomerOrders';
 import CustomerProfile from '@/pages/customer/CustomerProfile';
 import ErrandRequestPage from '@/pages/customer/ErrandRequest';
+import Support from '@/pages/customer/Support';
 
 // Vendor
 import VendorOrders from '@/pages/vendor/VendorOrders';
@@ -56,6 +57,7 @@ function App() {
             <Route path="/customer/orders" element={<CustomerOrders />} />
             <Route path="/customer/profile" element={<CustomerProfile />} />
             <Route path="/customer/errand" element={<ErrandRequestPage />} />
+            <Route path="/customer/support" element={<Support />} />
 
             {/* Vendor */}
             <Route path="/vendor/orders" element={<VendorOrders />} />

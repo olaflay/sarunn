@@ -1,12 +1,13 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Home, Search, ShoppingBag, User, ClipboardList, UtensilsCrossed, TrendingUp, Briefcase, DollarSign, LayoutDashboard, Settings, Users } from 'lucide-react';
+import { Home, ShoppingBag, User, ClipboardList, UtensilsCrossed, TrendingUp, Briefcase, DollarSign, LayoutDashboard, Settings, Users, Headset } from 'lucide-react';
+import { useCart, cartItemCount } from '@/lib/runnaStore';
 
 const NAV_CONFIGS = {
   customer: [
     { label: 'Home', icon: Home, path: '/customer/home' },
-    { label: 'Search', icon: Search, path: '/customer/search' },
-    { label: 'Orders', icon: ShoppingBag, path: '/customer/orders' },
+    { label: 'Orders', icon: ShoppingBag, path: '/customer/orders', cartBadge: true },
+    { label: 'Support', icon: Headset, path: '/customer/support' },
     { label: 'Profile', icon: User, path: '/customer/profile' },
   ],
   vendor: [
@@ -32,7 +33,9 @@ const NAV_CONFIGS = {
 export default function BottomNav({ role }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const cart = useCart();
   const items = NAV_CONFIGS[role] || [];
+  const count = cartItemCount(cart);
 
   return (
     <div className="bottom-nav">
@@ -45,12 +48,17 @@ export default function BottomNav({ role }) {
             onClick={() => navigate(item.path)}
             className="bottom-nav-item"
           >
-            <div className={`nav-indicator px-4 py-1 transition-all duration-200 ${isActive ? 'bg-blue-50 rounded-2xl' : ''}`}>
+            <div className={`nav-indicator px-4 py-1 transition-all duration-200 relative ${isActive ? 'bg-blue-50 rounded-2xl' : ''}`}>
               <Icon
                 size={22}
                 strokeWidth={isActive ? 2.5 : 1.75}
                 color={isActive ? '#1E7CFF' : '#94a3b8'}
               />
+              {item.cartBadge && count > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center border border-white">
+                  {count}
+                </span>
+              )}
             </div>
             <span
               className="text-xs font-medium transition-colors"

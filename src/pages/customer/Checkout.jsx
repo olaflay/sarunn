@@ -1,46 +1,60 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, MapPin, CreditCard, Wallet, ChevronRight, CheckCircle } from 'lucide-react';
+import { ArrowLeft, MapPin, CreditCard, Landmark, ShoppingCart } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import RunnaShell from '@/components/RunnaShell';
 import DemoBar from '@/components/DemoBar';
 import Snackbar from '@/components/Snackbar';
+import { getCart, clearVendorCart, vendorSubtotal } from '@/lib/runnaStore';
+import { getVendor } from '@/lib/runnaData';
 
 const PAYMENT_METHODS = [
-  { id: 'card', label: 'Credit / Debit Card', icon: CreditCard, desc: '•••• 4242' },
-  { id: 'wallet', label: 'RUNNA Wallet', icon: Wallet, desc: 'Balance: ₦12,500' },
+  { id: 'card', label: 'Card Payment', icon: CreditCard, desc: 'Pay with debit / credit card' },
+  { id: 'transfer', label: 'Bank Transfer', icon: Landmark, desc: 'Pay via bank transfer' },
 ];
 
 export default function Checkout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { cart = {}, vendor = {}, menuItems = [] } = location.state || {};
+  const { vendorId } = location.state || {};
 
-  const [address, setAddress] = useState('14 Allen Avenue, Ikeja, Lagos');
+  const group = getCart()[vendorId];
+  const vendor = getVendor(vendorId) || {};
+
+  const [address, setAddress] = useState('Block 2 Room 5, Male Hostel');
   const [payment, setPayment] = useState('card');
   const [note, setNote] = useState('');
   const [placing, setPlacing] = useState(false);
   const [snack, setSnack] = useState('');
 
-  const items = menuItems.filter(i => cart[i.id]);
-  const subtotal = items.reduce((sum, item) => sum + cart[item.id] * item.price, 0);
-  const deliveryFee = (vendor.delivery_fee || 1.5) * 700;
+  const items = group ? Object.values(group.items) : [];
+  const subtotal = group ? vendorSubtotal(group) : 0;
+  const deliveryFee = group?.delivery_fee || 0;
   const total = subtotal + deliveryFee;
+
+  if (!group) {
+    return (
+      <RunnaShell>
+        <DemoBar currentRole="Customer" />
+        <div className="runna-screen bg-background flex flex-col items-center justify-center text-center px-8">
+          <div className="text-5xl mb-4">🛒</div>
+          <h3 className="font-heading font-bold text-foreground text-base mb-1">Nothing to check out</h3>
+          <p className="text-muted-foreground text-sm mb-6">Your cart for this vendor is empty.</p>
+          <button onClick={() => navigate('/customer/orders')} className="text-white font-semibold rounded-2xl px-6 py-3 text-sm" style={{ background: '#1B2B45' }}>Back to Orders</button>
+        </div>
+      </RunnaShell>
+    );
+  }
 
   const handlePlaceOrder = async () => {
     if (!address.trim()) { setSnack('Please enter a delivery address'); return; }
     setPlacing(true);
     try {
-      const orderItems = items.map(item => ({
-        item_id: item.id,
-        name: item.name,
-        price: item.price,
-        quantity: cart[item.id],
-      }));
+      const orderItems = items.map(item => ({ item_id: item.id, name: item.name, price: item.price, quantity: item.qty }));
       await base44.entities.Order.create({
         customer_id: 'demo_customer',
-        vendor_id: vendor.id || '1',
-        vendor_name: vendor.store_name || 'Burger Palace',
+        vendor_id: vendor.id || vendorId,
+        vendor_name: group.store_name,
         customer_name: 'Demo Customer',
         status: 'pending',
         items: orderItems,
@@ -48,14 +62,17 @@ export default function Checkout() {
         delivery_fee: deliveryFee,
         total,
         delivery_address: address,
-        payment_method: payment,
+        notes: note,
+        payment_method: payment === 'transfer' ? 'card' : payment,
         payment_status: 'paid',
         estimated_delivery_min: vendor.delivery_time_min || 30,
       });
-      navigate('/customer/order-tracking', { state: { vendor, total } });
+      clearVendorCart(vendorId);
+      navigate('/customer/order-tracking', { state: { vendor: { store_name: group.store_name, delivery_time_min: vendor.delivery_time_min }, total } });
     } catch {
+      clearVendorCart(vendorId);
       setSnack('Order placed! Tracking your delivery…');
-      setTimeout(() => navigate('/customer/order-tracking', { state: { vendor, total } }), 800);
+      setTimeout(() => navigate('/customer/order-tracking', { state: { vendor: { store_name: group.store_name }, total } }), 800);
     }
     setPlacing(false);
   };
@@ -64,7 +81,6 @@ export default function Checkout() {
     <RunnaShell>
       <DemoBar currentRole="Customer" />
       <div className="runna-screen bg-background">
-        {/* Header */}
         <div className="flex items-center gap-3 px-4 py-4 bg-white border-b border-border/40">
           <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
             <ArrowLeft size={18} />
@@ -76,27 +92,23 @@ export default function Checkout() {
           {/* Delivery Address */}
           <div className="bg-white rounded-2xl p-4 shadow-sm border border-border/40">
             <h3 className="font-semibold text-foreground text-sm mb-3 flex items-center gap-2">
-              <MapPin size={16} color="#1E7CFF" /> Delivery Address
+              <MapPin size={16} color="#1B2B45" /> Delivery Address
             </h3>
-            <input
-              className="md3-input text-sm"
-              value={address}
-              onChange={e => setAddress(e.target.value)}
-              placeholder="Enter your delivery address"
-            />
+            <input className="md3-input text-sm" value={address} onChange={e => setAddress(e.target.value)} placeholder="e.g. Block 2 Room 5, Male Hostel" />
           </div>
 
           {/* Order Summary */}
           <div className="bg-white rounded-2xl p-4 shadow-sm border border-border/40">
-            <h3 className="font-semibold text-foreground text-sm mb-3">Order from {vendor.store_name || 'Restaurant'}</h3>
+            <h3 className="font-semibold text-foreground text-sm mb-3 flex items-center gap-2">
+              <ShoppingCart size={16} color="#1B2B45" /> {group.store_name}
+            </h3>
             <div className="space-y-2">
               {items.map(item => (
                 <div key={item.id} className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">{cart[item.id]}× {item.name}</span>
-                  <span className="font-medium text-foreground">₦{(cart[item.id] * item.price).toLocaleString()}</span>
+                  <span className="text-muted-foreground">{item.qty}× {item.name}</span>
+                  <span className="font-medium text-foreground">₦{(item.qty * item.price).toLocaleString()}</span>
                 </div>
               ))}
-              {items.length === 0 && <p className="text-muted-foreground text-sm">No items in cart</p>}
             </div>
             <div className="border-t border-border/40 mt-3 pt-3 space-y-1.5">
               <div className="flex justify-between text-sm">
@@ -109,7 +121,7 @@ export default function Checkout() {
               </div>
               <div className="flex justify-between text-sm font-bold border-t border-border/40 pt-2 mt-2">
                 <span>Total</span>
-                <span style={{ color: '#1E7CFF' }}>₦{total.toLocaleString()}</span>
+                <span style={{ color: '#1B2B45' }}>₦{total.toLocaleString()}</span>
               </div>
             </div>
           </div>
@@ -126,15 +138,15 @@ export default function Checkout() {
                     key={method.id}
                     onClick={() => setPayment(method.id)}
                     className="w-full flex items-center gap-3 p-3 rounded-xl border-2 transition-all text-left"
-                    style={{ borderColor: selected ? '#1E7CFF' : 'hsl(var(--border))', background: selected ? '#F0F7FF' : 'white' }}
+                    style={{ borderColor: selected ? '#1B2B45' : 'hsl(var(--border))', background: selected ? '#F0F2F7' : 'white' }}
                   >
-                    <Icon size={20} color={selected ? '#1E7CFF' : '#94a3b8'} />
+                    <Icon size={20} color={selected ? '#1B2B45' : '#94a3b8'} />
                     <div className="flex-1">
                       <p className="text-sm font-semibold text-foreground">{method.label}</p>
                       <p className="text-xs text-muted-foreground">{method.desc}</p>
                     </div>
-                    <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${selected ? 'border-blue-500' : 'border-slate-300'}`}>
-                      {selected && <div className="w-2 h-2 rounded-full bg-blue-500" />}
+                    <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${selected ? 'border-slate-800' : 'border-slate-300'}`}>
+                      {selected && <div className="w-2 h-2 rounded-full" style={{ background: '#1B2B45' }} />}
                     </div>
                   </button>
                 );
@@ -145,22 +157,10 @@ export default function Checkout() {
           {/* Special Instructions */}
           <div className="bg-white rounded-2xl p-4 shadow-sm border border-border/40">
             <h3 className="font-semibold text-foreground text-sm mb-3">Special Instructions</h3>
-            <textarea
-              className="md3-input text-sm resize-none"
-              rows={3}
-              placeholder="Any special requests for your order?"
-              value={note}
-              onChange={e => setNote(e.target.value)}
-            />
+            <textarea className="md3-input text-sm resize-none" rows={3} placeholder="Any special requests for your order?" value={note} onChange={e => setNote(e.target.value)} />
           </div>
 
-          {/* Place Order */}
-          <button
-            onClick={handlePlaceOrder}
-            disabled={placing}
-            className="btn-filled w-full text-sm"
-            style={{ borderRadius: '16px', padding: '16px', fontSize: '1rem' }}
-          >
+          <button onClick={handlePlaceOrder} disabled={placing} className="w-full text-white font-semibold rounded-2xl py-4 text-base" style={{ background: '#1B2B45', opacity: placing ? 0.6 : 1 }}>
             {placing ? 'Placing Order…' : `Place Order · ₦${total.toLocaleString()}`}
           </button>
           <div className="h-4" />
