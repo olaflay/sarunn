@@ -79,7 +79,7 @@ export default function CustomerHome() {
               <p className="font-heading font-extrabold text-lg leading-none" style={{ color: '#1B2B45' }}>RUNNA</p>
               <p className="text-muted-foreground text-xs mt-0.5">Campus delivery, made easy</p>
             </div>
-            <button className="w-10 h-10 rounded-full bg-muted flex items-center justify-center relative">
+            <button className="w-10 h-10 rounded-full bg-muted flex items-center justify-center relative text-xs">
               <Bell size={20} color="#1B2B45" />
               <div className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 border-2 border-white" />
             </button>
