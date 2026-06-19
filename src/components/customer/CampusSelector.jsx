@@ -10,8 +10,8 @@ export default function CampusSelector({ open, onClose, selectedId }) {
       <div className="absolute inset-0 bg-black/40 animate-fade-in" />
       <div
         className="relative bg-white rounded-t-3xl p-5 pb-8 animate-slide-up"
-        onClick={e => e.stopPropagation()}
-      >
+        onClick={(e) => e.stopPropagation()}>
+        
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-heading font-bold text-foreground text-base">Select your campus</h3>
           <button onClick={onClose} className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
@@ -19,15 +19,15 @@ export default function CampusSelector({ open, onClose, selectedId }) {
           </button>
         </div>
         <div className="space-y-2.5">
-          {CAMPUSES.map(c => {
+          {CAMPUSES.map((c) => {
             const selected = c.id === selectedId;
             return (
               <button
                 key={c.id}
-                onClick={() => { setCampus(c.id); onClose(); }}
+                onClick={() => {setCampus(c.id);onClose();}}
                 className="w-full flex items-center gap-3 p-3.5 rounded-2xl border-2 text-left transition-all"
-                style={{ borderColor: selected ? '#1B2B45' : 'hsl(var(--border))', background: selected ? '#F0F2F7' : 'white' }}
-              >
+                style={{ borderColor: selected ? '#1B2B45' : 'hsl(var(--border))', background: selected ? '#F0F2F7' : 'white' }}>
+                
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#1B2B45' }}>
                   <MapPin size={18} color="white" />
                 </div>
@@ -36,22 +36,22 @@ export default function CampusSelector({ open, onClose, selectedId }) {
                   <p className="text-muted-foreground text-xs">{campusVendorCount(c.id)} vendors · {c.institution}</p>
                 </div>
                 {selected && <Check size={18} color="#1B2B45" />}
-              </button>
-            );
+              </button>);
+
           })}
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 export function CampusButton({ campus, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="w-full flex items-center gap-3 rounded-2xl p-4 text-left shadow-sm"
-      style={{ background: 'linear-gradient(135deg, #1B2B45 0%, #243a5e 100%)' }}
-    >
+      className="w-full flex items-center gap-3 rounded-2xl p-4 text-left shadow-sm hidden"
+      style={{ background: 'linear-gradient(135deg, #1B2B45 0%, #243a5e 100%)' }}>
+      
       <div className="w-11 h-11 rounded-xl bg-white/15 flex items-center justify-center flex-shrink-0">
         <MapPin size={20} color="white" />
       </div>
@@ -62,6 +62,6 @@ export function CampusButton({ campus, onClick }) {
         </p>
       </div>
       <ChevronDown size={20} className="text-white/70 flex-shrink-0" />
-    </button>
-  );
+    </button>);
+
 }
