@@ -92,7 +92,7 @@ export default function CustomerHome() {
 
           {/* Service grid */}
           <div className="mt-5">
-            <h3 className="font-heading font-bold text-foreground text-sm mb-3 hidden">What do you need?</h3>
+            
             <ServiceGrid onSelect={handleService} />
           </div>
 

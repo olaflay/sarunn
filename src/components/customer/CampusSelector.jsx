@@ -46,22 +46,22 @@ export default function CampusSelector({ open, onClose, selectedId }) {
 }
 
 export function CampusButton({ campus, onClick }) {
-  return (
-    <button
-      onClick={onClick}
-      className="w-full flex items-center gap-3 rounded-2xl p-4 text-left shadow-sm hidden"
-      style={{ background: 'linear-gradient(135deg, #1B2B45 0%, #243a5e 100%)' }}>
-      
-      <div className="w-11 h-11 rounded-xl bg-white/15 flex items-center justify-center flex-shrink-0">
-        <MapPin size={20} color="white" />
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-white/60 text-xs font-medium uppercase tracking-wider">Your Campus</p>
-        <p className="text-white font-heading font-bold text-base leading-tight truncate">
-          {campus ? campus.name : 'Select your campus'}
-        </p>
-      </div>
-      <ChevronDown size={20} className="text-white/70 flex-shrink-0" />
-    </button>);
+  return null;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
