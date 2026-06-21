@@ -7,7 +7,9 @@
 @layer base {
   :root {
     /* RUNNA Brand + MD3 Color System */
-    --runna-primary: #1E7CFF;
+    --runna-primary: #1B2B45;
+    --runna-accent: #3DB04B;
+    --runna-blue: #1E7CFF;
     --runna-primary-dark: #1561CC;
     --runna-navy: #1B2B45;
     --runna-navy-deep: #0F1E35;

@@ -16,7 +16,11 @@ function write(key, val, evt) {
 
 /* ---------------- Campus ---------------- */
 export function getCampus() { return read(CAMPUS_KEY); }
-export function setCampus(id) { write(CAMPUS_KEY, id, CAMPUS_EVENT); }
+export function setCampus(id) {
+  const current = getCampus();
+  if (current && current !== id) clearCart(); // edge case A: clear cart on campus switch
+  write(CAMPUS_KEY, id, CAMPUS_EVENT);
+}
 
 export function useCampus() {
   const [campus, setC] = useState(getCampus());

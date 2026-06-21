@@ -1,17 +1,97 @@
 // RUNNA — campus-scoped static data (Phase 1)
 
 export const CAMPUSES = [
-  { id: 'lasu-epe', name: 'LASU Epe Campus', institution: 'Lagos State University' },
-  { id: 'lasued-epe', name: 'LASUED Epe Campus', institution: 'Lagos State University of Education' },
+  { id: 'lasu-epe', name: 'LASU Epe Campus', institution: 'Lagos State University', est_delivery: '15–30 min' },
+  { id: 'lasued-epe', name: 'LASUED Epe Campus', institution: 'Lagos State University of Education', est_delivery: '10–25 min' },
 ];
 
-// Service grid on the home screen. Only food + send package are active for now.
+// Service grid on the home screen
 export const SERVICES = [
   { id: 'food', label: 'Food', active: true },
   { id: 'send', label: 'Send Package', active: true },
   { id: 'laundry', label: 'Laundry', active: false },
   { id: 'print', label: 'Printing Press', active: false },
 ];
+
+// ─── 3-Level Location System ───────────────────────────────────────────────
+// Level 1: Campus (above) → Level 2: Main Location → Level 3: Sub Location
+
+export const LOCATIONS = {
+  'lasu-epe': [
+    { id: 'school-campus', label: 'School Campus', base_fee: 300 },
+    { id: 'iraye', label: 'Iraye', base_fee: 400 },
+    { id: 'itamarun', label: 'Itamarun', base_fee: 450 },
+  ],
+  'lasued-epe': [
+    { id: 'lasued-main', label: 'Main Campus', base_fee: 300 },
+    { id: 'lasued-annex', label: 'Annex Area', base_fee: 350 },
+  ],
+};
+
+export const SUB_LOCATIONS = {
+  'school-campus': [
+    { id: 'library', label: 'Library', surcharge: 0 },
+    { id: 'mosque', label: 'Mosque', surcharge: 50 },
+    { id: 'chapel', label: 'School Chapel', surcharge: 0 },
+    { id: 'ece-hall', label: 'ECE Lecture Hall', surcharge: 0 },
+    { id: 'part-time', label: 'Part-time Lecture Rooms', surcharge: 0 },
+    { id: 'male-hostel', label: 'Male Hostel', surcharge: 0 },
+    { id: 'female-hostel', label: 'Female Hostel', surcharge: 0 },
+  ],
+  'iraye': [
+    { id: 'iraye-junction', label: 'Iraye Junction', surcharge: 0 },
+    { id: 'iraye-market', label: 'Iraye Market', surcharge: 50 },
+  ],
+  'itamarun': [
+    { id: 'itamarun-junction', label: 'Itamarun Junction', surcharge: 0 },
+    { id: 'itamarun-gate', label: 'Itamarun Gate', surcharge: 0 },
+  ],
+  'lasued-main': [
+    { id: 'lasued-library', label: 'Library', surcharge: 0 },
+    { id: 'lasued-hostel-m', label: 'Male Hostel', surcharge: 0 },
+    { id: 'lasued-hostel-f', label: 'Female Hostel', surcharge: 0 },
+    { id: 'lasued-lecture', label: 'Lecture Halls', surcharge: 0 },
+  ],
+  'lasued-annex': [
+    { id: 'lasued-annex-gate', label: 'Main Gate', surcharge: 0 },
+    { id: 'lasued-annex-hall', label: 'Assembly Hall', surcharge: 0 },
+  ],
+};
+
+export function getLocations(campusId) {
+  return LOCATIONS[campusId] || [];
+}
+
+export function getSubLocations(locationId) {
+  return SUB_LOCATIONS[locationId] || [];
+}
+
+/** Calculate errand delivery fee based on zones selected */
+export function calculateErrandFee(fromLocationId, toLocationId, toSubLocationId) {
+  let fromFee = 0;
+  let toFee = 0;
+  let surcharge = 0;
+
+  for (const locs of Object.values(LOCATIONS)) {
+    const f = locs.find(l => l.id === fromLocationId);
+    if (f) fromFee = f.base_fee;
+    const t = locs.find(l => l.id === toLocationId);
+    if (t) toFee = t.base_fee;
+  }
+
+  const baseFee = Math.max(fromFee, toFee);
+
+  if (toSubLocationId) {
+    for (const subs of Object.values(SUB_LOCATIONS)) {
+      const s = subs.find(sub => sub.id === toSubLocationId);
+      if (s) { surcharge = s.surcharge; break; }
+    }
+  }
+
+  return baseFee + surcharge;
+}
+
+// ─── Vendors ───────────────────────────────────────────────────────────────
 
 export const VENDORS = [
   { id: '1', store_name: 'Mama Tee Kitchen', campus: 'lasu-epe', category: 'food', rating: 4.8, rating_count: 312, delivery_time_min: 20, delivery_fee: 500, address: 'Behind Male Hostel, LASU Epe', logo_url: 'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?w=80&h=80&fit=crop', cover_url: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=400&h=180&fit=crop', tags: ['Local', 'Rice'], is_open: true },

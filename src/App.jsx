@@ -37,6 +37,8 @@ import AdminDashboard from '@/pages/admin/AdminDashboard';
 import AdminOrders from '@/pages/admin/AdminOrders';
 import AdminUsers from '@/pages/admin/AdminUsers';
 import AdminSettings from '@/pages/admin/AdminSettings';
+import AdminLedger from '@/pages/admin/AdminLedger';
+import AdminDisputes from '@/pages/admin/AdminDisputes';
 
 function App() {
   return (
@@ -76,6 +78,8 @@ function App() {
             <Route path="/admin/orders" element={<AdminOrders />} />
             <Route path="/admin/users" element={<AdminUsers />} />
             <Route path="/admin/settings" element={<AdminSettings />} />
+            <Route path="/admin/ledger" element={<AdminLedger />} />
+            <Route path="/admin/disputes" element={<AdminDisputes />} />
 
             <Route path="*" element={<PageNotFound />} />
           </Routes>

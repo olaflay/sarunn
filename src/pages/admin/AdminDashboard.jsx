@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ShoppingBag, Users, Store, TrendingUp, AlertCircle, CheckCircle, Clock, XCircle } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { BarChart, Bar, XAxis, ResponsiveContainer, Tooltip, LineChart, Line } from 'recharts';
-import RunnaShell from '@/components/RunnaShell';
-import DemoBar from '@/components/DemoBar';
-import BottomNav from '@/components/BottomNav';
+import AdminShell from '@/components/AdminShell';
 
 const KPI = [
   { label: 'Orders Today', value: '127', icon: ShoppingBag, color: '#1E7CFF', bg: '#E3F2FD', change: '+12%' },
@@ -41,9 +39,8 @@ const ORDER_STATUS = [
 
 export default function AdminDashboard() {
   return (
-    <RunnaShell>
-      <DemoBar currentRole="Admin" />
-      <div className="runna-screen bg-background">
+    <AdminShell>
+      <div className="bg-background min-h-full">
         <div className="navy-gradient px-4 pt-6 pb-8">
           <p className="text-white/60 text-xs">Platform Overview</p>
           <h1 className="font-heading font-bold text-white text-xl">Admin Dashboard</h1>
@@ -129,7 +126,6 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
-      <BottomNav role="admin" />
-    </RunnaShell>
+    </AdminShell>
   );
 }

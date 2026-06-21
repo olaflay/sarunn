@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Settings, DollarSign, Bell, Shield, Globe, ChevronRight, ToggleRight, ToggleLeft } from 'lucide-react';
-import RunnaShell from '@/components/RunnaShell';
-import DemoBar from '@/components/DemoBar';
-import BottomNav from '@/components/BottomNav';
+import AdminShell from '@/components/AdminShell';
 import Snackbar from '@/components/Snackbar';
 
 export default function AdminSettings() {
@@ -24,9 +22,8 @@ export default function AdminSettings() {
   const set = (k, v) => setSettings(s => ({ ...s, [k]: v }));
 
   return (
-    <RunnaShell>
-      <DemoBar currentRole="Admin" />
-      <div className="runna-screen bg-background">
+    <AdminShell>
+      <div className="bg-background min-h-full">
         <div className="bg-white border-b border-border/40 px-4 py-4 sticky top-0 z-30 flex items-center gap-2">
           <Settings size={20} color="#1E7CFF" />
           <h1 className="font-heading font-bold text-foreground text-lg">Platform Settings</h1>
@@ -103,8 +100,7 @@ export default function AdminSettings() {
           <div className="h-4" />
         </div>
       </div>
-      <BottomNav role="admin" />
       <Snackbar message={snack} onClose={() => setSnack('')} />
-    </RunnaShell>
+    </AdminShell>
   );
 }

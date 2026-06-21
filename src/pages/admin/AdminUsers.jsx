@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Search, CheckCircle, XCircle, User, Store, Bike, Shield } from 'lucide-react';
-import RunnaShell from '@/components/RunnaShell';
-import DemoBar from '@/components/DemoBar';
-import BottomNav from '@/components/BottomNav';
+import AdminShell from '@/components/AdminShell';
 import Snackbar from '@/components/Snackbar';
 
 const TABS = ['Customers', 'Vendors', 'Runners'];
@@ -51,10 +49,9 @@ export default function AdminUsers() {
   };
 
   return (
-    <RunnaShell>
-      <DemoBar currentRole="Admin" />
-      <div className="runna-screen bg-background">
-        <div className="bg-white border-b border-border/40 px-4 py-4 sticky top-0 z-30">
+    <AdminShell>
+      <div className="bg-background min-h-full">
+        <div className="bg-white border-b border-border/40 px-4 py-4 sticky top-0 z-10">
           <h1 className="font-heading font-bold text-foreground text-lg mb-3">User Management</h1>
           <div className="flex items-center gap-2 bg-muted rounded-2xl px-3 py-2.5 mb-3">
             <Search size={15} color="#94a3b8" />
@@ -156,8 +153,7 @@ export default function AdminUsers() {
           ))}
         </div>
       </div>
-      <BottomNav role="admin" />
       <Snackbar message={snack} onClose={() => setSnack('')} />
-    </RunnaShell>
+    </AdminShell>
   );
 }
