@@ -11,7 +11,20 @@ export const SERVICES = [
   { id: 'send', label: 'Send Package', active: true },
   { id: 'laundry', label: 'Laundry', active: false },
   { id: 'print', label: 'Printing Press', active: false },
+  { id: 'market', label: 'Market', active: false, badge: 'Best Prices' },
 ];
+
+export function getLocationLabel(campusId, mainId, subId) {
+  const locs = getLocations(campusId);
+  const main = locs.find(l => l.id === mainId);
+  if (!main) return null;
+  if (subId) {
+    const subs = getSubLocations(mainId);
+    const sub = subs.find(s => s.id === subId);
+    if (sub) return `${main.label} › ${sub.label}`;
+  }
+  return main.label;
+}
 
 // ─── 3-Level Location System ───────────────────────────────────────────────
 // Level 1: Campus (above) → Level 2: Main Location → Level 3: Sub Location

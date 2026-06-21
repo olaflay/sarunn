@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, MapPin, CreditCard, Landmark, ShoppingCart } from 'lucide-react';
+import { ArrowLeft, MapPin, CreditCard, Landmark, ShoppingCart, AlertTriangle, ChevronRight } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import RunnaShell from '@/components/RunnaShell';
 import DemoBar from '@/components/DemoBar';
 import Snackbar from '@/components/Snackbar';
-import { getCart, clearVendorCart, vendorSubtotal } from '@/lib/runnaStore';
-import { getVendor } from '@/lib/runnaData';
+import DeliveryLocationPicker from '@/components/customer/DeliveryLocationPicker';
+import { getCart, clearVendorCart, vendorSubtotal, getDeliveryLocation, useCampus } from '@/lib/runnaStore';
+import { getVendor, getLocationLabel } from '@/lib/runnaData';
 
 const PAYMENT_METHODS = [
   { id: 'card', label: 'Card Payment', icon: CreditCard, desc: 'Pay with debit / credit card' },
@@ -17,15 +18,24 @@ export default function Checkout() {
   const navigate = useNavigate();
   const location = useLocation();
   const { vendorId } = location.state || {};
+  const campusId = useCampus();
 
   const group = getCart()[vendorId];
   const vendor = getVendor(vendorId) || {};
 
-  const [address, setAddress] = useState('Block 2 Room 5, Male Hostel');
   const [payment, setPayment] = useState('card');
   const [note, setNote] = useState('');
   const [placing, setPlacing] = useState(false);
   const [snack, setSnack] = useState('');
+  const [locPickerOpen, setLocPickerOpen] = useState(false);
+  const [deliveryLoc, setDeliveryLocState] = useState(getDeliveryLocation());
+
+  const locLabel = campusId && deliveryLoc
+    ? getLocationLabel(campusId, deliveryLoc.mainId, deliveryLoc.subId)
+    : null;
+  const locFull = locLabel
+    ? `${locLabel}${deliveryLoc?.note ? ', ' + deliveryLoc.note : ''}`
+    : '';
 
   const items = group ? Object.values(group.items) : [];
   const subtotal = group ? vendorSubtotal(group) : 0;
@@ -40,14 +50,21 @@ export default function Checkout() {
           <div className="text-5xl mb-4">🛒</div>
           <h3 className="font-heading font-bold text-foreground text-base mb-1">Nothing to check out</h3>
           <p className="text-muted-foreground text-sm mb-6">Your cart for this vendor is empty.</p>
-          <button onClick={() => navigate('/customer/orders')} className="text-white font-semibold rounded-2xl px-6 py-3 text-sm" style={{ background: '#1B2B45' }}>Back to Orders</button>
+          <button onClick={() => navigate('/customer/orders')} className="text-white font-semibold rounded-2xl px-6 py-3 text-sm" style={{ background: '#1B2B45' }}>
+            Back to Orders
+          </button>
         </div>
       </RunnaShell>
     );
   }
 
   const handlePlaceOrder = async () => {
-    if (!address.trim()) { setSnack('Please enter a delivery address'); return; }
+    // Enforce delivery location before checkout
+    if (!deliveryLoc || !deliveryLoc.mainId) {
+      setLocPickerOpen(true);
+      setSnack('Please set your delivery location first');
+      return;
+    }
     setPlacing(true);
     try {
       const orderItems = items.map(item => ({ item_id: item.id, name: item.name, price: item.price, quantity: item.qty }));
@@ -61,7 +78,7 @@ export default function Checkout() {
         subtotal,
         delivery_fee: deliveryFee,
         total,
-        delivery_address: address,
+        delivery_address: locFull,
         notes: note,
         payment_method: payment === 'transfer' ? 'card' : payment,
         payment_status: 'paid',
@@ -81,7 +98,7 @@ export default function Checkout() {
     <RunnaShell>
       <DemoBar currentRole="Customer" />
       <div className="runna-screen bg-background">
-        <div className="flex items-center gap-3 px-4 py-4 bg-white border-b border-border/40">
+        <div className="flex items-center gap-3 px-4 py-4 bg-white border-b border-border/40 sticky top-0 z-20">
           <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
             <ArrowLeft size={18} />
           </button>
@@ -89,12 +106,29 @@ export default function Checkout() {
         </div>
 
         <div className="px-4 pt-4 space-y-4">
-          {/* Delivery Address */}
+          {/* Delivery Location */}
           <div className="bg-white rounded-2xl p-4 shadow-sm border border-border/40">
             <h3 className="font-semibold text-foreground text-sm mb-3 flex items-center gap-2">
-              <MapPin size={16} color="#1B2B45" /> Delivery Address
+              <MapPin size={16} color="#1B2B45" /> Delivery Location
             </h3>
-            <input className="md3-input text-sm" value={address} onChange={e => setAddress(e.target.value)} placeholder="e.g. Block 2 Room 5, Male Hostel" />
+            <button
+              onClick={() => setLocPickerOpen(true)}
+              className="w-full flex items-center gap-3 p-3 rounded-xl border-2 text-left"
+              style={{ borderColor: locLabel ? '#1B2B45' : '#F59E0B', background: locLabel ? '#F0F2F7' : '#FFFBEB' }}
+            >
+              <MapPin size={16} color={locLabel ? '#1B2B45' : '#F59E0B'} />
+              <div className="flex-1 min-w-0">
+                {locLabel ? (
+                  <>
+                    <p className="text-sm font-semibold text-foreground">{locLabel}</p>
+                    {deliveryLoc?.note && <p className="text-xs text-muted-foreground truncate">{deliveryLoc.note}</p>}
+                  </>
+                ) : (
+                  <p className="text-sm font-semibold text-amber-700">⚠ Set delivery location (required)</p>
+                )}
+              </div>
+              <ChevronRight size={15} color="#94a3b8" />
+            </button>
           </div>
 
           {/* Order Summary */}
@@ -157,15 +191,34 @@ export default function Checkout() {
           {/* Special Instructions */}
           <div className="bg-white rounded-2xl p-4 shadow-sm border border-border/40">
             <h3 className="font-semibold text-foreground text-sm mb-3">Special Instructions</h3>
-            <textarea className="md3-input text-sm resize-none" rows={3} placeholder="Any special requests for your order?" value={note} onChange={e => setNote(e.target.value)} />
+            <textarea className="md3-input text-sm resize-none" rows={3} placeholder="Any special requests?" value={note} onChange={e => setNote(e.target.value)} />
           </div>
 
-          <button onClick={handlePlaceOrder} disabled={placing} className="w-full text-white font-semibold rounded-2xl py-4 text-base" style={{ background: '#1B2B45', opacity: placing ? 0.6 : 1 }}>
+          {!locLabel && (
+            <div className="flex items-center gap-2 p-3 rounded-xl text-xs font-medium" style={{ background: '#FFFBEB', color: '#92400E' }}>
+              <AlertTriangle size={14} color="#F59E0B" />
+              You must set your delivery location before placing the order.
+            </div>
+          )}
+
+          <button
+            onClick={handlePlaceOrder}
+            disabled={placing}
+            className="w-full text-white font-semibold rounded-2xl py-4 text-base"
+            style={{ background: '#1B2B45', opacity: placing ? 0.6 : 1 }}
+          >
             {placing ? 'Placing Order…' : `Place Order · ₦${total.toLocaleString()}`}
           </button>
           <div className="h-4" />
         </div>
       </div>
+
+      <DeliveryLocationPicker
+        campusId={campusId}
+        open={locPickerOpen}
+        onClose={() => setLocPickerOpen(false)}
+        onSave={(loc) => setDeliveryLocState(loc)}
+      />
       <Snackbar message={snack} onClose={() => setSnack('')} />
     </RunnaShell>
   );

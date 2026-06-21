@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { X, Plus, Minus } from 'lucide-react';
 import { addToCart, getItemQty } from '@/lib/runnaStore';
 
-// Chowdeck-style full-screen product modal (no description)
+// Chowdeck-style 3/4 bottom-sheet product modal
 export default function ProductModal({ vendor, item, onClose, onAdded }) {
   const [qty, setQty] = useState(Math.max(1, getItemQty(vendor.id, item.id)));
 
@@ -14,51 +14,70 @@ export default function ProductModal({ vendor, item, onClose, onAdded }) {
   };
 
   return (
-    <div className="absolute inset-0 z-[70] flex flex-col bg-white animate-fade-in">
-      {/* Hero image */}
-      <div className="relative" style={{ height: '52%' }}>
-        <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-md"
-        >
-          <X size={18} color="#1B2B45" />
-        </button>
-      </div>
+    <div
+      className="absolute inset-0 z-[70] flex flex-col justify-end animate-fade-in"
+      style={{ background: 'rgba(0,0,0,0.55)' }}
+      onClick={onClose}
+    >
+      {/* 3/4 sheet */}
+      <div
+        className="relative bg-white rounded-t-3xl animate-slide-up overflow-hidden"
+        style={{ maxHeight: '78%' }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Close pill */}
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-10 h-1 rounded-full bg-slate-200 z-10" />
 
-      {/* Details */}
-      <div className="flex-1 flex flex-col p-5">
-        <h2 className="font-heading font-bold text-foreground text-xl leading-tight">{item.name}</h2>
-        <p className="font-bold text-lg mt-2" style={{ color: '#1B2B45' }}>₦{item.price.toLocaleString()}</p>
+        {/* Image */}
+        <div className="relative" style={{ height: '200px' }}>
+          <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
+          <button
+            onClick={onClose}
+            className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 flex items-center justify-center shadow-md"
+          >
+            <X size={16} color="#1B2B45" />
+          </button>
+        </div>
 
-        <div className="mt-auto pt-5">
-          {/* Qty stepper */}
-          <div className="flex items-center justify-center gap-6 mb-4">
-            <button
-              onClick={() => setQty(q => Math.max(1, q - 1))}
-              className="w-11 h-11 rounded-full border-2 flex items-center justify-center"
-              style={{ borderColor: qty <= 1 ? '#E5E7EB' : '#1B2B45' }}
-            >
-              <Minus size={18} color={qty <= 1 ? '#9CA3AF' : '#1B2B45'} />
-            </button>
-            <span className="font-heading font-bold text-2xl text-foreground w-8 text-center">{qty}</span>
-            <button
-              onClick={() => setQty(q => q + 1)}
-              className="w-11 h-11 rounded-full border-2 flex items-center justify-center"
-              style={{ borderColor: '#1B2B45' }}
-            >
-              <Plus size={18} color="#1B2B45" />
-            </button>
+        {/* Content */}
+        <div className="p-5">
+          <div className="flex items-start justify-between gap-3 mb-4">
+            <h2 className="font-heading font-bold text-foreground text-lg leading-tight flex-1">{item.name}</h2>
+            <p className="font-bold text-base flex-shrink-0" style={{ color: '#1B2B45' }}>₦{item.price.toLocaleString()}</p>
           </div>
 
-          <button
-            onClick={handleAdd}
-            className="w-full flex items-center justify-between text-white font-semibold rounded-2xl px-5 py-4"
-            style={{ background: '#1B2B45' }}
-          >
-            <span>Add to Cart</span>
-            <span>₦{(item.price * qty).toLocaleString()}</span>
-          </button>
+          {item.category && (
+            <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-muted text-muted-foreground">
+              {item.category}
+            </span>
+          )}
+
+          {/* Qty stepper + CTA */}
+          <div className="flex items-center gap-4 mt-5">
+            <div className="flex items-center gap-3 border-2 rounded-2xl px-3 py-2" style={{ borderColor: '#1B2B45' }}>
+              <button
+                onClick={() => setQty(q => Math.max(1, q - 1))}
+                className="w-7 h-7 flex items-center justify-center"
+              >
+                <Minus size={16} color={qty <= 1 ? '#94a3b8' : '#1B2B45'} />
+              </button>
+              <span className="font-heading font-bold text-base text-foreground w-5 text-center">{qty}</span>
+              <button
+                onClick={() => setQty(q => q + 1)}
+                className="w-7 h-7 flex items-center justify-center"
+              >
+                <Plus size={16} color="#1B2B45" />
+              </button>
+            </div>
+            <button
+              onClick={handleAdd}
+              className="flex-1 flex items-center justify-between text-white font-semibold rounded-2xl px-4 py-3 text-sm"
+              style={{ background: '#1B2B45' }}
+            >
+              <span>Add to Cart</span>
+              <span>₦{(item.price * qty).toLocaleString()}</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

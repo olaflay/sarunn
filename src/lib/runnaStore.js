@@ -18,7 +18,10 @@ function write(key, val, evt) {
 export function getCampus() { return read(CAMPUS_KEY); }
 export function setCampus(id) {
   const current = getCampus();
-  if (current && current !== id) clearCart(); // edge case A: clear cart on campus switch
+  if (current && current !== id) {
+    clearCart();
+    clearDeliveryLocation(); // delivery zone is campus-specific
+  }
   write(CAMPUS_KEY, id, CAMPUS_EVENT);
 }
 
@@ -78,6 +81,27 @@ export function clearVendorCart(vendorId) {
 }
 
 export function clearCart() { saveCart({}); }
+
+/* -------------- Delivery Location ----------------
+   Shape: { mainId, subId, note }
+*/
+const LOC_KEY = 'runna_delivery_loc';
+const LOC_EVENT = 'runna:deliveryloc';
+export function getDeliveryLocation() { return read(LOC_KEY); }
+export function setDeliveryLocation(loc) { write(LOC_KEY, loc, LOC_EVENT); }
+export function clearDeliveryLocation() {
+  localStorage.removeItem(LOC_KEY);
+  window.dispatchEvent(new Event(LOC_EVENT));
+}
+export function useDeliveryLocation() {
+  const [loc, setLoc] = useState(getDeliveryLocation());
+  useEffect(() => {
+    const h = () => setLoc(getDeliveryLocation());
+    window.addEventListener(LOC_EVENT, h);
+    return () => window.removeEventListener(LOC_EVENT, h);
+  }, []);
+  return loc;
+}
 
 export function getItemQty(vendorId, itemId) {
   return getCart()[vendorId]?.items?.[itemId]?.qty || 0;
