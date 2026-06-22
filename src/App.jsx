@@ -8,6 +8,8 @@ import ScrollToTop from './components/ScrollToTop';
 
 // Splash
 import Splash from '@/pages/Splash';
+import About from '@/pages/About';
+import Contact from '@/pages/Contact';
 
 // Customer
 import CustomerHome from '@/pages/customer/CustomerHome';
@@ -50,6 +52,10 @@ function App() {
           <Routes>
             {/* Splash */}
             <Route path="/" element={<Splash />} />
+
+            {/* Public Pages */}
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
 
             {/* Customer */}
             <Route path="/customer/home" element={<CustomerHome />} />

@@ -7,6 +7,7 @@ import BottomNav from '@/components/BottomNav';
 import ServiceGrid from '@/components/customer/ServiceGrid';
 import CampusSelector from '@/components/customer/CampusSelector';
 import DeliveryLocationPicker from '@/components/customer/DeliveryLocationPicker';
+import PublicFooter from '@/components/PublicFooter';
 import { CAMPUSES, getLocationLabel } from '@/lib/runnaData';
 import { useCampus, useDeliveryLocation } from '@/lib/runnaStore';
 
@@ -131,6 +132,7 @@ export default function CustomerHome() {
         onClose={() => setLocPickerOpen(false)}
         onSave={() => {}}
       />
+      <PublicFooter />
       <BottomNav role="customer" />
     </RunnaShell>
   );
