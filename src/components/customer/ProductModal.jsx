@@ -46,8 +46,14 @@ export default function ProductModal({ vendor, item, onClose, onAdded }) {
             <p className="font-bold text-base flex-shrink-0" style={{ color: '#1B2B45' }}>₦{item.price.toLocaleString()}</p>
           </div>
 
+          {item.description && (
+            <p className="text-sm text-muted-foreground leading-relaxed mt-2" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+              {item.description}
+            </p>
+          )}
+
           {item.category && (
-            <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-muted text-muted-foreground">
+            <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-muted text-muted-foreground mt-3 inline-block">
               {item.category}
             </span>
           )}

@@ -11,6 +11,7 @@ import Splash from '@/pages/Splash';
 
 // Customer
 import CustomerHome from '@/pages/customer/CustomerHome';
+import FoodHome from '@/pages/customer/FoodHome';
 import CustomerSearch from '@/pages/customer/CustomerSearch';
 import VendorDetail from '@/pages/customer/VendorDetail';
 import Checkout from '@/pages/customer/Checkout';
@@ -52,6 +53,7 @@ function App() {
 
             {/* Customer */}
             <Route path="/customer/home" element={<CustomerHome />} />
+            <Route path="/customer/food" element={<FoodHome />} />
             <Route path="/customer/search" element={<CustomerSearch />} />
             <Route path="/customer/vendor/:id" element={<VendorDetail />} />
             <Route path="/customer/checkout" element={<Checkout />} />

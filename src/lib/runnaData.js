@@ -7,11 +7,12 @@ export const CAMPUSES = [
 
 // Service grid on the home screen
 export const SERVICES = [
-  { id: 'food', label: 'Food', active: true },
+  { id: 'food', label: 'Food Delivery', active: true },
   { id: 'send', label: 'Send Package', active: true },
+  { id: 'receive', label: 'Receive Package', active: true },
+  { id: 'market', label: 'Shopping', active: false, badge: 'Best Prices' },
   { id: 'laundry', label: 'Laundry', active: false },
-  { id: 'print', label: 'Printing Press', active: false },
-  { id: 'market', label: 'Market', active: false, badge: 'Best Prices' },
+  { id: 'print', label: 'Printing', active: false },
 ];
 
 export function getLocationLabel(campusId, mainId, subId) {
@@ -117,31 +118,31 @@ export const VENDORS = [
 
 const MENUS = {
   '1': [
-    { id: 'm1-1', name: 'Jollof Rice & Chicken', price: 2500, image_url: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=200&h=200&fit=crop', category: 'Rice' },
-    { id: 'm1-2', name: 'Fried Rice & Turkey', price: 3000, image_url: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=200&h=200&fit=crop', category: 'Rice' },
-    { id: 'm1-3', name: 'White Rice & Stew', price: 2000, image_url: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=200&h=200&fit=crop', category: 'Rice' },
-    { id: 'm1-4', name: 'Bottle Water', price: 300, image_url: 'https://images.unsplash.com/photo-1560023907-5f339617ea30?w=200&h=200&fit=crop', category: 'Drinks' },
+    { id: 'm1-1', name: 'Jollof Rice & Chicken', description: 'Smoky Nigerian jollof rice served with grilled chicken and fresh salad.', price: 2500, image_url: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=200&h=200&fit=crop', category: 'Rice' },
+    { id: 'm1-2', name: 'Fried Rice & Turkey', description: 'Colourful fried rice with chunks of smoked turkey and fried plantain.', price: 3000, image_url: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=200&h=200&fit=crop', category: 'Rice' },
+    { id: 'm1-3', name: 'White Rice & Stew', description: 'Fluffy white rice paired with rich pepper stew and assorted meat.', price: 2000, image_url: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=200&h=200&fit=crop', category: 'Rice' },
+    { id: 'm1-4', name: 'Bottle Water', description: 'Chilled 75cl bottled water.', price: 300, image_url: 'https://images.unsplash.com/photo-1560023907-5f339617ea30?w=200&h=200&fit=crop', category: 'Drinks' },
   ],
   '2': [
-    { id: 'm2-1', name: 'Classic Beef Burger', price: 3200, image_url: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200&h=200&fit=crop', category: 'Burgers' },
-    { id: 'm2-2', name: 'Crispy Chicken Burger', price: 3500, image_url: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=200&h=200&fit=crop', category: 'Burgers' },
-    { id: 'm2-3', name: 'Loaded Fries', price: 1800, image_url: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200&h=200&fit=crop', category: 'Sides' },
-    { id: 'm2-4', name: 'Chapman', price: 1200, image_url: 'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=200&h=200&fit=crop', category: 'Drinks' },
+    { id: 'm2-1', name: 'Classic Beef Burger', description: 'Juicy beef patty, melted cheese, lettuce, and tomato in a soft bun.', price: 3200, image_url: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200&h=200&fit=crop', category: 'Burgers' },
+    { id: 'm2-2', name: 'Crispy Chicken Burger', description: 'Crispy fried chicken fillet with mayo, pickles, and crunchy coleslaw.', price: 3500, image_url: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=200&h=200&fit=crop', category: 'Burgers' },
+    { id: 'm2-3', name: 'Loaded Fries', description: 'Golden fries topped with cheese sauce, bacon bits, and jalapeños.', price: 1800, image_url: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200&h=200&fit=crop', category: 'Sides' },
+    { id: 'm2-4', name: 'Chapman', description: 'Refreshing fruit cocktail drink with a hint of citrus and bitters.', price: 1200, image_url: 'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=200&h=200&fit=crop', category: 'Drinks' },
   ],
   '4': [
-    { id: 'm4-1', name: 'Pounded Yam & Egusi', price: 2800, image_url: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=200&h=200&fit=crop', category: 'Swallow' },
-    { id: 'm4-2', name: 'Eba & Ogbono', price: 2500, image_url: 'https://images.unsplash.com/photo-1604908554007-90b9c3c1f9a8?w=200&h=200&fit=crop', category: 'Swallow' },
-    { id: 'm4-3', name: 'Amala & Ewedu', price: 2400, image_url: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=200&h=200&fit=crop', category: 'Swallow' },
+    { id: 'm4-1', name: 'Pounded Yam & Egusi', description: 'Smooth pounded yam with rich egusi soup loaded with assorted meat.', price: 2800, image_url: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=200&h=200&fit=crop', category: 'Swallow' },
+    { id: 'm4-2', name: 'Eba & Ogbono', description: 'Eba served with draw-y Ogbono soup and assorted beef cuts.', price: 2500, image_url: 'https://images.unsplash.com/photo-1604908554007-90b9c3c1f9a8?w=200&h=200&fit=crop', category: 'Swallow' },
+    { id: 'm4-3', name: 'Amala & Ewedu', description: 'Soft Amala with silky Ewedu and rich Gbegiri stew.', price: 2400, image_url: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=200&h=200&fit=crop', category: 'Swallow' },
   ],
   '5': [
-    { id: 'm5-1', name: 'Mixed Small Chops', price: 2000, image_url: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=200&h=200&fit=crop', category: 'Chops' },
-    { id: 'm5-2', name: 'Peppered Gizzard', price: 2500, image_url: 'https://images.unsplash.com/photo-1432139509613-5c4255815697?w=200&h=200&fit=crop', category: 'Grills' },
-    { id: 'm5-3', name: 'Spring Rolls (6pcs)', price: 1500, image_url: 'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=200&h=200&fit=crop', category: 'Chops' },
+    { id: 'm5-1', name: 'Mixed Small Chops', description: 'Assorted puff-puff, spring rolls, samosas, and peppered gizzard.', price: 2000, image_url: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=200&h=200&fit=crop', category: 'Chops' },
+    { id: 'm5-2', name: 'Peppered Gizzard', description: 'Spicy grilled gizzard tossed in a peppered onion sauce.', price: 2500, image_url: 'https://images.unsplash.com/photo-1432139509613-5c4255815697?w=200&h=200&fit=crop', category: 'Grills' },
+    { id: 'm5-3', name: 'Spring Rolls (6pcs)', description: 'Crispy vegetable spring rolls served with sweet chilli sauce.', price: 1500, image_url: 'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=200&h=200&fit=crop', category: 'Chops' },
   ],
   '6': [
-    { id: 'm6-1', name: 'Beef Suya', price: 2000, image_url: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=200&h=200&fit=crop', category: 'Suya' },
-    { id: 'm6-2', name: 'Grilled Chicken', price: 3500, image_url: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=200&h=200&fit=crop', category: 'Grills' },
-    { id: 'm6-3', name: 'Grilled Fish', price: 4000, image_url: 'https://images.unsplash.com/photo-1535140728325-a4d3707eee61?w=200&h=200&fit=crop', category: 'Grills' },
+    { id: 'm6-1', name: 'Beef Suya', description: 'Peppered beef skewers grilled with traditional Yaji spice.', price: 2000, image_url: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=200&h=200&fit=crop', category: 'Suya' },
+    { id: 'm6-2', name: 'Grilled Chicken', description: 'Half chicken marinated in spices and grilled to perfection.', price: 3500, image_url: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=200&h=200&fit=crop', category: 'Grills' },
+    { id: 'm6-3', name: 'Grilled Fish', description: 'Whole catfish grilled with peppered sauce and onions.', price: 4000, image_url: 'https://images.unsplash.com/photo-1535140728325-a4d3707eee61?w=200&h=200&fit=crop', category: 'Grills' },
   ],
 };
 
@@ -166,3 +167,20 @@ export function vendorsByCampus(campusId) {
 export function campusVendorCount(campusId) {
   return VENDORS.filter(v => v.campus === campusId).length;
 }
+
+// ─── Food Discovery Data ────────────────────────────────────────────────────
+
+export const FOOD_CATEGORIES = ['All', 'Local', 'Fast Food', 'Swallow', 'Grills', 'Suya', 'Pastries'];
+
+export const POPULAR_MEALS = [
+  { id: 'p1', name: 'Jollof Rice & Chicken', description: 'Smoky Nigerian jollof rice served with grilled chicken and fresh salad.', price: 2500, image_url: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=200&h=200&fit=crop', vendorId: '1' },
+  { id: 'p2', name: 'Classic Beef Burger', description: 'Juicy beef patty with melted cheese, lettuce, and tomato.', price: 3200, image_url: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200&h=200&fit=crop', vendorId: '2' },
+  { id: 'p3', name: 'Pounded Yam & Egusi', description: 'Smooth pounded yam with rich egusi soup and assorted meat.', price: 2800, image_url: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=200&h=200&fit=crop', vendorId: '4' },
+  { id: 'p4', name: 'Mixed Small Chops', description: 'Assorted puff-puff, spring rolls, and peppered gizzard.', price: 2000, image_url: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=200&h=200&fit=crop', vendorId: '5' },
+  { id: 'p5', name: 'Beef Suya', description: 'Peppered beef skewers with traditional Yaji spice.', price: 2000, image_url: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=200&h=200&fit=crop', vendorId: '6' },
+];
+
+export const PROMOTIONS = [
+  { id: 'promo1', title: 'Free Delivery Weekend', desc: 'Free delivery on all food orders over ₦2,000 this weekend only.', bg: 'linear-gradient(135deg, #1B2B45 0%, #2A4374 100%)' },
+  { id: 'promo2', title: '20% Off First Order', desc: 'New users get 20% off their first food order. No code needed.', bg: 'linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%)' },
+];

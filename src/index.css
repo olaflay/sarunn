@@ -63,6 +63,23 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+
+    /* M3 Surface Container Hierarchy (Light) */
+    --m3-surface: 220 20% 97%;
+    --m3-surface-lowest: 0 0% 100%;
+    --m3-surface-low: 220 14% 96%;
+    --m3-surface-container: 220 14% 94%;
+    --m3-surface-high: 220 12% 92%;
+    --m3-surface-highest: 220 10% 90%;
+    --m3-on-surface: 215 35% 15%;
+    --m3-on-surface-variant: 215 16% 40%;
+    --m3-outline: 215 16% 50%;
+    --m3-outline-variant: 220 13% 85%;
+    --m3-secondary: 215 25% 35%;
+    --m3-secondary-container: 215 25% 90%;
+    --m3-tertiary: 127 30% 35%;
+    --m3-tertiary-container: 127 30% 88%;
+    --m3-error-container: 4 74% 90%;
   }
 
   .dark {
@@ -98,6 +115,23 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+
+    /* M3 Surface Container Hierarchy (Dark) */
+    --m3-surface: 215 42% 8%;
+    --m3-surface-lowest: 215 45% 6%;
+    --m3-surface-low: 215 40% 10%;
+    --m3-surface-container: 215 35% 13%;
+    --m3-surface-high: 215 32% 16%;
+    --m3-surface-highest: 215 30% 20%;
+    --m3-on-surface: 220 20% 95%;
+    --m3-on-surface-variant: 215 16% 70%;
+    --m3-outline: 215 16% 60%;
+    --m3-outline-variant: 215 30% 25%;
+    --m3-secondary: 215 25% 75%;
+    --m3-secondary-container: 215 25% 25%;
+    --m3-tertiary: 127 30% 70%;
+    --m3-tertiary-container: 127 30% 25%;
+    --m3-error-container: 4 74% 25%;
   }
 }
 
@@ -439,6 +473,63 @@
 
 .scroll-x::-webkit-scrollbar {
   display: none;
+}
+
+/* ── Material 3 Design System Utilities ── */
+
+/* M3 Typography Scale */
+.m3-display-small { font-size: 2.25rem; line-height: 2.75rem; font-weight: 400; letter-spacing: 0; }
+.m3-headline-large { font-size: 2rem; line-height: 2.5rem; font-weight: 400; }
+.m3-headline-medium { font-size: 1.75rem; line-height: 2.25rem; font-weight: 400; }
+.m3-headline-small { font-size: 1.5rem; line-height: 2rem; font-weight: 400; }
+.m3-title-large { font-size: 1.375rem; line-height: 1.75rem; font-weight: 400; }
+.m3-title-medium { font-size: 1rem; line-height: 1.5rem; font-weight: 500; letter-spacing: 0.009em; }
+.m3-title-small { font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; letter-spacing: 0.007em; }
+.m3-body-large { font-size: 1rem; line-height: 1.5rem; font-weight: 400; letter-spacing: 0.031em; }
+.m3-body-medium { font-size: 0.875rem; line-height: 1.25rem; font-weight: 400; letter-spacing: 0.016em; }
+.m3-body-small { font-size: 0.75rem; line-height: 1rem; font-weight: 400; letter-spacing: 0.025em; }
+.m3-label-large { font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; letter-spacing: 0.007em; }
+.m3-label-medium { font-size: 0.75rem; line-height: 1rem; font-weight: 500; letter-spacing: 0.031em; }
+.m3-label-small { font-size: 0.6875rem; line-height: 1rem; font-weight: 500; letter-spacing: 0.031em; }
+
+/* M3 Surface Containers */
+.m3-surface { background: hsl(var(--m3-surface)); color: hsl(var(--m3-on-surface)); }
+.m3-surface-low { background: hsl(var(--m3-surface-low)); }
+.m3-surface-container { background: hsl(var(--m3-surface-container)); }
+.m3-surface-high { background: hsl(var(--m3-surface-high)); }
+.m3-surface-highest { background: hsl(var(--m3-surface-highest)); }
+
+/* M3 Elevation (tonal surface + shadow) */
+.m3-elevate-1 {
+  background: hsl(var(--m3-surface-low));
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+}
+.m3-elevate-2 {
+  background: hsl(var(--m3-surface-container));
+  box-shadow: 0 2px 6px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.06);
+}
+.m3-elevate-3 {
+  background: hsl(var(--m3-surface-high));
+  box-shadow: 0 4px 12px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+}
+
+/* M3 Shape Scale */
+.m3-shape-xs { border-radius: 4px; }
+.m3-shape-s { border-radius: 8px; }
+.m3-shape-m { border-radius: 12px; }
+.m3-shape-l { border-radius: 16px; }
+.m3-shape-xl { border-radius: 28px; }
+.m3-shape-full { border-radius: 9999px; }
+
+/* M3 Motion */
+.m3-motion-standard {
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+.m3-motion-emphasized {
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+}
+.m3-motion-spring {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* Navy gradient background */

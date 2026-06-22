@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Package, Inbox, ChevronDown, CheckCircle, Loader, AlertTriangle, Info, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Package, Inbox, ChevronDown, CheckCircle, Loader, AlertTriangle, Info, ChevronRight, MapPin } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import RunnaShell from '@/components/RunnaShell';
 import DemoBar from '@/components/DemoBar';
 import Snackbar from '@/components/Snackbar';
 import { getCampus, getDeliveryLocation } from '@/lib/runnaStore';
+import DeliveryLocationPicker from '@/components/customer/DeliveryLocationPicker';
 import { getLocations, getSubLocations, calculateErrandFee, getLocationLabel, CAMPUSES } from '@/lib/runnaData';
 
 const SIZES = [
@@ -63,6 +64,9 @@ export default function ErrandRequestPage() {
 
   const [step, setStep] = useState(0); // 0=landing, 1=form, 2=matching, 3=confirmed
   const [mode, setMode] = useState('send');
+  const [locPickerOpen, setLocPickerOpen] = useState(false);
+  const [deliveryLocState, setDeliveryLocState] = useState(savedLoc);
+  const locLabel = campusId && deliveryLocState ? getLocationLabel(campusId, deliveryLocState.mainId, deliveryLocState.subId) : null;
 
   // Pickup location
   const [fromMain, setFromMain] = useState('');
@@ -94,41 +98,54 @@ export default function ErrandRequestPage() {
   const fee = calculateErrandFee(fromMain, toMain, toSub);
   const canSubmit = fromMain && toMain && recvName && recvPhone;
 
-  // ── Step 0: Landing ──
+  // ── Step 0: Package Delivery Dashboard ──
   if (step === 0) {
     return (
       <RunnaShell>
         <DemoBar currentRole="Customer" />
-        <div className="runna-screen bg-background">
+        <div className="runna-screen bg-background flex flex-col">
+
+          {/* Top bar with location capsule */}
           <div className="flex items-center gap-3 px-4 py-4 bg-white border-b border-border/40 sticky top-0 z-30">
-            <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
+            <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
               <ArrowLeft size={18} />
             </button>
-            <div>
-              <p className="text-xs text-muted-foreground">Campus delivery</p>
-              <h1 className="font-heading font-bold text-foreground text-base">Send Package</h1>
-            </div>
+            <button
+              onClick={() => setLocPickerOpen(true)}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-muted flex-1 max-w-[280px] m3-motion-standard active:scale-98"
+            >
+              <MapPin size={14} color={locLabel ? '#2E7D32' : '#F59E0B'} className="flex-shrink-0" />
+              <span className="text-xs font-medium text-foreground truncate">
+                {locLabel || 'Select delivery location'}
+              </span>
+              <ChevronDown size={12} color="#94a3b8" className="flex-shrink-0 ml-auto" />
+            </button>
           </div>
 
-          <div className="px-4 pt-6 space-y-4">
-            <p className="text-muted-foreground text-sm text-center">What would you like to do?</p>
-
+          {/* Main action cards — fill available space, balanced */}
+          <div className="flex-1 flex flex-col gap-4 p-4 min-h-0">
             {/* Send card */}
             <button
               onClick={() => { setMode('send'); setStep(1); }}
-              className="w-full rounded-3xl overflow-hidden text-left border-2 border-border/60 bg-white shadow-sm active:scale-95 transition-transform"
-              style={{ borderColor: '#1B2B45' }}
+              className="relative flex-1 rounded-3xl overflow-hidden text-left m3-motion-emphasized active:scale-98"
+              style={{ background: 'linear-gradient(135deg, #1B2B45 0%, #2A4374 100%)', minHeight: '180px' }}
             >
-              <div className="p-5 flex items-center gap-4">
-                <div className="w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: '#E8F5F0' }}>
-                  <Package size={30} color="#1B2B45" />
+              {/* Decorative illustration circle */}
+              <div className="absolute inset-0 flex items-center justify-end pr-6">
+                <div className="w-28 h-28 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                  <Package size={48} color="rgba(255,255,255,0.9)" />
                 </div>
-                <div className="flex-1">
-                  <p className="font-heading font-bold text-foreground text-base">Send, seamlessly</p>
-                  <p className="text-muted-foreground text-xs mt-0.5">Packages • Parcels • Deliveries</p>
+              </div>
+              <div className="relative p-6 flex flex-col h-full justify-between">
+                <div>
+                  <h2 className="font-heading font-bold text-white text-xl leading-tight">Send, seamlessly</h2>
+                  <p className="text-white/60 text-xs mt-1">Packages • Parcels • Deliveries</p>
                 </div>
-                <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-inner" style={{ background: '#F0F2F7' }}>
-                  <ChevronRight size={18} color="#1B2B45" />
+                <div
+                  className="w-12 h-12 rounded-full flex items-center justify-center"
+                  style={{ background: 'rgba(255,255,255,0.15)', boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.3)' }}
+                >
+                  <ChevronRight size={20} color="white" />
                 </div>
               </div>
             </button>
@@ -136,23 +153,37 @@ export default function ErrandRequestPage() {
             {/* Receive card */}
             <button
               onClick={() => { setMode('receive'); setStep(1); }}
-              className="w-full rounded-3xl overflow-hidden text-left border-2 border-border/60 bg-white shadow-sm active:scale-95 transition-transform"
+              className="relative flex-1 rounded-3xl overflow-hidden text-left m3-motion-emphasized active:scale-98"
+              style={{ background: 'linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%)', minHeight: '180px' }}
             >
-              <div className="p-5 flex items-center gap-4">
-                <div className="w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: '#EDF3FF' }}>
-                  <Inbox size={30} color="#1B2B45" />
+              {/* Decorative illustration circle */}
+              <div className="absolute inset-0 flex items-center justify-end pr-6">
+                <div className="w-28 h-28 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                  <Inbox size={48} color="rgba(255,255,255,0.9)" />
                 </div>
-                <div className="flex-1">
-                  <p className="font-heading font-bold text-foreground text-base">Receive, with ease</p>
-                  <p className="text-muted-foreground text-xs mt-0.5">Packages • Parcels • Deliveries</p>
+              </div>
+              <div className="relative p-6 flex flex-col h-full justify-between">
+                <div>
+                  <h2 className="font-heading font-bold text-white text-xl leading-tight">Receive, with ease</h2>
+                  <p className="text-white/60 text-xs mt-1">Packages • Parcels • Deliveries</p>
                 </div>
-                <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-inner" style={{ background: '#F0F2F7' }}>
-                  <ChevronRight size={18} color="#1B2B45" />
+                <div
+                  className="w-12 h-12 rounded-full flex items-center justify-center"
+                  style={{ background: 'rgba(255,255,255,0.15)', boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.3)' }}
+                >
+                  <ChevronRight size={20} color="white" />
                 </div>
               </div>
             </button>
           </div>
         </div>
+
+        <DeliveryLocationPicker
+          campusId={campusId}
+          open={locPickerOpen}
+          onClose={() => setLocPickerOpen(false)}
+          onSave={(loc) => setDeliveryLocState(loc)}
+        />
       </RunnaShell>
     );
   }
