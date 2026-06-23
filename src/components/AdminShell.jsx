@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Menu, X, LayoutDashboard, Wallet, Users, AlertTriangle, Settings, ChevronDown, ChevronRight } from 'lucide-react';
+import { Menu, X, LayoutDashboard, Wallet, Users, AlertTriangle, Settings, ChevronDown, ChevronRight, MapPin } from 'lucide-react';
 import DemoBar from '@/components/DemoBar';
 
 const NAV = [
@@ -15,6 +15,7 @@ const NAV = [
     ],
   },
   { id: 'disputes', label: 'Disputes', icon: AlertTriangle, path: '/admin/disputes', badge: 3 },
+  { id: 'pricing', label: 'Pricing', icon: MapPin, path: '/admin/pricing' },
   { id: 'settings', label: 'Settings', icon: Settings, path: '/admin/settings' },
 ];
 

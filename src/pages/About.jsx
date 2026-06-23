@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Mail, MapPin, Clock, Send } from 'lucide-react';
+import { ArrowLeft, Mail, MapPin, Clock, Send, GraduationCap, Store, Bike } from 'lucide-react';
 import RunnaShell from '@/components/RunnaShell';
 import DemoBar from '@/components/DemoBar';
 import PublicFooter from '@/components/PublicFooter';
@@ -81,7 +81,7 @@ export default function About() {
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: '#E8F5E9' }}>
-                    <span className="text-sm">🎓</span>
+                    <GraduationCap size={18} color="#2E7D32" />
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-foreground">Students</p>
@@ -90,7 +90,7 @@ export default function About() {
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: '#FFF3E0' }}>
-                    <span className="text-sm">🏪</span>
+                    <Store size={18} color="#E65100" />
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-foreground">Vendors</p>
@@ -99,7 +99,7 @@ export default function About() {
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: '#EDF3FF' }}>
-                    <span className="text-sm">🛵</span>
+                    <Bike size={18} color="#1565C0" />
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-foreground">Runners</p>

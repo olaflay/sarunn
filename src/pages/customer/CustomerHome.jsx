@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, MapPin, Settings2, ChevronRight, CheckCircle } from 'lucide-react';
+import { Bell, MapPin, Settings2, ChevronRight } from 'lucide-react';
 import RunnaShell from '@/components/RunnaShell';
 import DemoBar from '@/components/DemoBar';
 import BottomNav from '@/components/BottomNav';
@@ -63,53 +63,55 @@ export default function CustomerHome() {
             <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2.5">Step 1 · Select Campus</p>
 
             {campus ? (
-              /* Active campus card */
-              <div className="bg-white rounded-2xl border border-border/50 shadow-sm p-4 m3-motion-standard">
-                <div className="flex items-start gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#E8F5E9' }}>
-                    <CheckCircle size={20} color="#2E7D32" />
+              <div className="bg-white rounded-2xl border border-border/50 shadow-sm overflow-hidden">
+                {/* Campus info */}
+                <div className="p-4">
+                  <div className="flex items-center justify-between mb-1">
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Current Campus</p>
+                    <button onClick={() => setCampusPickerOpen(true)} className="text-xs font-semibold" style={{ color: '#1E7CFF' }}>
+                      Change
+                    </button>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs text-muted-foreground font-medium">Current Campus</p>
-                    <p className="font-semibold text-foreground text-sm leading-tight">{campus.name}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">You can switch your campus location anytime</p>
-                  </div>
+                  <p className="font-heading font-bold text-foreground text-base leading-tight">{campus.name}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{campus.institution} · Est. {campus.est_delivery}</p>
                 </div>
 
-                {/* Delivery location row */}
+                {/* Delivery location */}
                 <button
                   onClick={() => setLocPickerOpen(true)}
-                  className="w-full flex items-center gap-2.5 p-3 rounded-xl mb-3 text-left"
+                  className="w-full flex items-center gap-3 px-4 py-3.5 border-t border-border/30 text-left m3-motion-standard"
                   style={{ background: locLabel ? '#F0F7FF' : '#FFFBEB' }}
                 >
-                  <MapPin size={14} color={locLabel ? '#1565C0' : '#F59E0B'} className="flex-shrink-0" />
-                  <p className="text-xs flex-1 truncate" style={{ color: locLabel ? '#1565C0' : '#92400E' }}>
-                    {locLabel
-                      ? <>Deliver to: <span className="font-semibold">{locLabel}</span>{deliveryLoc?.note ? ` · ${deliveryLoc.note}` : ''}</>
-                      : 'Set your delivery location'}
-                  </p>
-                  <ChevronRight size={12} color="#94a3b8" />
-                </button>
-
-                <button
-                  onClick={() => setCampusPickerOpen(true)}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-border/60 text-sm font-semibold text-foreground m3-motion-standard active:scale-98"
-                >
-                  <Settings2 size={14} /> Change Campus Location
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: locLabel ? '#E3F2FD' : '#FEF3C7' }}>
+                    <MapPin size={15} color={locLabel ? '#1565C0' : '#D97706'} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    {locLabel ? (
+                      <>
+                        <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">Deliver to</p>
+                        <p className="text-sm font-semibold text-foreground truncate">{locLabel}{deliveryLoc?.note ? ` · ${deliveryLoc.note}` : ''}</p>
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-sm font-semibold text-foreground">Set delivery location</p>
+                        <p className="text-xs text-muted-foreground">Required for checkout</p>
+                      </>
+                    )}
+                  </div>
+                  <ChevronRight size={16} color="#94a3b8" className="flex-shrink-0" />
                 </button>
               </div>
             ) : (
-              /* Empty campus card */
               <button
                 onClick={() => setCampusPickerOpen(true)}
-                className="w-full flex flex-col items-center py-7 rounded-2xl border-2 border-dashed border-border bg-white text-center m3-motion-standard active:scale-98"
+                className="w-full bg-white rounded-2xl border border-border/50 shadow-sm p-6 text-center m3-motion-standard active:scale-98"
               >
-                <div className="w-14 h-14 rounded-2xl navy-gradient mx-auto flex items-center justify-center mb-3">
+                <div className="w-14 h-14 rounded-2xl navy-gradient mx-auto flex items-center justify-center mb-4">
                   <MapPin size={26} color="white" />
                 </div>
-                <p className="font-semibold text-foreground text-sm mb-1">Select your campus</p>
-                <p className="text-muted-foreground text-xs mb-4">We'll show you vendors and services around you</p>
-                <div className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white" style={{ background: '#1B2B45' }}>
+                <p className="font-heading font-bold text-foreground text-base mb-1">Select your campus</p>
+                <p className="text-muted-foreground text-xs mb-5">We'll show you vendors and services around you</p>
+                <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white" style={{ background: '#1B2B45' }}>
                   <Settings2 size={14} /> Choose Campus
                 </div>
               </button>

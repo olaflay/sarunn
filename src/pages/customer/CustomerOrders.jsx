@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingBag, Trash2 } from 'lucide-react';
+import { ShoppingBag, Trash2, Package, ClipboardList } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import RunnaShell from '@/components/RunnaShell';
 import DemoBar from '@/components/DemoBar';
@@ -95,7 +95,7 @@ export default function CustomerOrders() {
           {/* MY CART */}
           {tab === 'cart' && (
             cartGroups.length === 0 ? (
-              <EmptyState emoji="🛒" title="Your cart is empty" sub="Add items from a vendor to get started" cta="Browse Vendors" onCta={() => navigate('/customer/home')} />
+              <EmptyState icon={ShoppingBag} title="Your cart is empty" sub="Add items from a vendor to get started" cta="Browse Vendors" onCta={() => navigate('/customer/home')} />
             ) : (
               cartGroups.map(group => (
                 <CartVendorGroup
@@ -111,7 +111,7 @@ export default function CustomerOrders() {
           {tab === 'ongoing' && (
             loading ? <Skeletons /> :
             ongoing.length === 0 ? (
-              <EmptyState emoji="📦" title="No ongoing orders" sub="Your live orders will show up here" cta="Order Now" onCta={() => navigate('/customer/home')} />
+              <EmptyState icon={Package} title="No ongoing orders" sub="Your live orders will show up here" cta="Order Now" onCta={() => navigate('/customer/home')} />
             ) : (
               ongoing.map(o => <OngoingOrderCard key={o.id} order={o} />)
             )
@@ -121,7 +121,7 @@ export default function CustomerOrders() {
           {tab === 'completed' && (
             loading ? <Skeletons /> :
             completed.length === 0 ? (
-              <EmptyState emoji="🧾" title="No past orders" sub="Completed orders will appear here" cta="Browse Vendors" onCta={() => navigate('/customer/home')} />
+              <EmptyState icon={ClipboardList} title="No past orders" sub="Completed orders will appear here" cta="Browse Vendors" onCta={() => navigate('/customer/home')} />
             ) : (
               completed.map(o => <CompletedOrderCard key={o.id} order={o} onReorder={() => navigate('/customer/home')} />)
             )
@@ -133,10 +133,12 @@ export default function CustomerOrders() {
   );
 }
 
-function EmptyState({ emoji, title, sub, cta, onCta }) {
+function EmptyState({ icon: Icon, title, sub, cta, onCta }) {
   return (
     <div className="text-center py-20">
-      <div className="text-5xl mb-4">{emoji}</div>
+      <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4">
+        <Icon size={28} color="#94a3b8" />
+      </div>
       <h3 className="font-heading font-bold text-foreground text-base mb-1">{title}</h3>
       <p className="text-muted-foreground text-sm mb-6">{sub}</p>
       <button onClick={onCta} className="text-white font-semibold rounded-2xl px-6 py-3 text-sm" style={{ background: '#1B2B45' }}>{cta}</button>

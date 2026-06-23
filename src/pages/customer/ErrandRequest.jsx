@@ -68,15 +68,13 @@ export default function ErrandRequestPage() {
   const [deliveryLocState, setDeliveryLocState] = useState(savedLoc);
   const locLabel = campusId && deliveryLocState ? getLocationLabel(campusId, deliveryLocState.mainId, deliveryLocState.subId) : null;
 
-  // Pickup location
+  // Pickup & delivery locations — set when user picks a mode (step 0)
   const [fromMain, setFromMain] = useState('');
   const [fromSub, setFromSub] = useState('');
   const [fromNote, setFromNote] = useState('');
-
-  // Delivery location — pre-fill from saved if available
-  const [toMain, setToMain] = useState(savedLoc?.mainId || '');
-  const [toSub, setToSub] = useState(savedLoc?.subId || '');
-  const [toNote, setToNote] = useState(savedLoc?.note || '');
+  const [toMain, setToMain] = useState('');
+  const [toSub, setToSub] = useState('');
+  const [toNote, setToNote] = useState('');
 
   // Sender details
   const [useMy, setUseMy] = useState(true);
@@ -126,7 +124,14 @@ export default function ErrandRequestPage() {
           <div className="flex-1 flex flex-col gap-4 p-4 min-h-0">
             {/* Send card */}
             <button
-              onClick={() => { setMode('send'); setStep(1); }}
+              onClick={() => {
+                setMode('send');
+                setFromMain(savedLoc?.mainId || '');
+                setFromSub(savedLoc?.subId || '');
+                setFromNote(savedLoc?.note || '');
+                setToMain(''); setToSub(''); setToNote('');
+                setStep(1);
+              }}
               className="relative flex-1 rounded-3xl overflow-hidden text-left m3-motion-emphasized active:scale-98"
               style={{ background: 'linear-gradient(135deg, #1B2B45 0%, #2A4374 100%)', minHeight: '180px' }}
             >
@@ -152,7 +157,14 @@ export default function ErrandRequestPage() {
 
             {/* Receive card */}
             <button
-              onClick={() => { setMode('receive'); setStep(1); }}
+              onClick={() => {
+                setMode('receive');
+                setFromMain(''); setFromSub(''); setFromNote('');
+                setToMain(savedLoc?.mainId || '');
+                setToSub(savedLoc?.subId || '');
+                setToNote(savedLoc?.note || '');
+                setStep(1);
+              }}
               className="relative flex-1 rounded-3xl overflow-hidden text-left m3-motion-emphasized active:scale-98"
               style={{ background: 'linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%)', minHeight: '180px' }}
             >
@@ -283,7 +295,7 @@ export default function ErrandRequestPage() {
               <>
                 <LocationSelect
                   campusId={campusId} mainId={fromMain} subId={fromSub}
-                  onMain={setFromMain} onSub={setFromSub} label="Pickup (where to collect from)"
+                  onMain={setFromMain} onSub={setFromSub} label="Pickup (your location)"
                 />
                 {fromMain && (
                   <input className="md3-input text-sm" placeholder="Precise pickup details (optional)" value={fromNote} onChange={e => setFromNote(e.target.value)} />
@@ -291,7 +303,7 @@ export default function ErrandRequestPage() {
                 <div className="border-t border-border/30" />
                 <LocationSelect
                   campusId={campusId} mainId={toMain} subId={toSub}
-                  onMain={setToMain} onSub={setToSub} label="Drop-off (deliver to)"
+                  onMain={setToMain} onSub={setToSub} label="Drop-off (receiver's location)"
                 />
                 {toMain && (
                   <input className="md3-input text-sm" placeholder="Precise drop-off details (optional)" value={toNote} onChange={e => setToNote(e.target.value)} />

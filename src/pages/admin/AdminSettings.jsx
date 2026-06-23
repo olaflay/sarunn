@@ -78,7 +78,7 @@ export default function AdminSettings() {
                 <label className="text-xs font-medium text-muted-foreground block mb-1.5">Support Email</label>
                 <input className="md3-input text-sm" type="email" value={settings.supportEmail} onChange={e => set('supportEmail', e.target.value)} />
               </div>
-              <button onClick={() => setSnack('✅ Settings saved!')} className="btn-filled w-full text-sm" style={{ borderRadius: '14px', padding: '13px' }}>
+              <button onClick={() => setSnack('Settings saved!')} className="btn-filled w-full text-sm" style={{ borderRadius: '14px', padding: '13px' }}>
                 Save Changes
               </button>
             </div>

@@ -72,12 +72,34 @@ export const SUB_LOCATIONS = {
   ],
 };
 
+// ─── Mutable location data (admin-editable, persisted to localStorage) ──────
+function loadFromStorage(key, fallback) {
+  try {
+    const saved = localStorage.getItem(key);
+    if (saved) return JSON.parse(saved);
+  } catch {}
+  return fallback;
+}
+
+let _locations = loadFromStorage('runna_locations', LOCATIONS);
+let _subLocations = loadFromStorage('runna_sub_locations', SUB_LOCATIONS);
+
+export function setLocations(newLocations) {
+  _locations = newLocations;
+  try { localStorage.setItem('runna_locations', JSON.stringify(newLocations)); } catch {}
+}
+
+export function setSubLocations(newSubs) {
+  _subLocations = newSubs;
+  try { localStorage.setItem('runna_sub_locations', JSON.stringify(newSubs)); } catch {}
+}
+
 export function getLocations(campusId) {
-  return LOCATIONS[campusId] || [];
+  return _locations[campusId] || [];
 }
 
 export function getSubLocations(locationId) {
-  return SUB_LOCATIONS[locationId] || [];
+  return _subLocations[locationId] || [];
 }
 
 /** Calculate errand delivery fee based on zones selected */
@@ -86,7 +108,7 @@ export function calculateErrandFee(fromLocationId, toLocationId, toSubLocationId
   let toFee = 0;
   let surcharge = 0;
 
-  for (const locs of Object.values(LOCATIONS)) {
+  for (const locs of Object.values(_locations)) {
     const f = locs.find(l => l.id === fromLocationId);
     if (f) fromFee = f.base_fee;
     const t = locs.find(l => l.id === toLocationId);
@@ -96,7 +118,7 @@ export function calculateErrandFee(fromLocationId, toLocationId, toSubLocationId
   const baseFee = Math.max(fromFee, toFee);
 
   if (toSubLocationId) {
-    for (const subs of Object.values(SUB_LOCATIONS)) {
+    for (const subs of Object.values(_subLocations)) {
       const s = subs.find(sub => sub.id === toSubLocationId);
       if (s) { surcharge = s.surcharge; break; }
     }

@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Search, Star, Clock, ShoppingBag } from 'lucide-react';
+import { ArrowLeft, Search, Star, Clock, ShoppingBag, MapPin } from 'lucide-react';
 import RunnaShell from '@/components/RunnaShell';
 import DemoBar from '@/components/DemoBar';
 import BottomNav from '@/components/BottomNav';
@@ -108,7 +108,9 @@ export default function FoodHome() {
       <RunnaShell>
         <DemoBar currentRole="Customer" />
         <div className="runna-screen bg-background flex flex-col items-center justify-center text-center px-8">
-          <div className="text-5xl mb-4">📍</div>
+          <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mb-4">
+            <MapPin size={28} color="#94a3b8" />
+          </div>
           <h3 className="font-heading font-bold text-foreground text-base mb-1">Select your campus first</h3>
           <p className="text-muted-foreground text-sm mb-6">Go back and choose a campus to see food vendors.</p>
           <button onClick={() => navigate('/customer/home')} className="text-white font-semibold rounded-2xl px-6 py-3 text-sm" style={{ background: '#1B2B45' }}>
@@ -187,7 +189,7 @@ export default function FoodHome() {
           {popular.length > 0 && (
             <div>
               <div className="flex items-center justify-between mb-3">
-                <h3 className="font-heading font-bold text-foreground text-sm">🔥 Popular Combos</h3>
+                <h3 className="font-heading font-bold text-foreground text-sm">Popular Combos</h3>
               </div>
               <div className="flex gap-3 scroll-x pb-1">
                 {popular.map(item => (
@@ -203,13 +205,15 @@ export default function FoodHome() {
 
           {/* All Restaurants */}
           <div className="flex items-center justify-between mb-3">
-            <h3 className="font-heading font-bold text-foreground text-sm">🍽️ All Restaurants</h3>
+            <h3 className="font-heading font-bold text-foreground text-sm">All Restaurants</h3>
             <span className="text-xs text-muted-foreground">{filteredVendors.length} places</span>
           </div>
 
           {filteredVendors.length === 0 ? (
             <div className="text-center py-12">
-              <div className="text-4xl mb-3">🔍</div>
+              <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center mb-3">
+                <Search size={24} color="#94a3b8" />
+              </div>
               <p className="font-semibold text-foreground text-sm mb-1">No results found</p>
               <p className="text-muted-foreground text-xs">Try a different search or category</p>
             </div>
