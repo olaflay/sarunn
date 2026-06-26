@@ -548,7 +548,6 @@ src/
 │   ├── AdminShell.jsx
 │   ├── RunnaShell.jsx          # Mobile PWA shell wrapper
 │   ├── BottomNav.jsx           # Customer/vendor/runner bottom nav
-│   ├── DemoBar.jsx             # Role switcher for demo
 │   ├── PublicFooter.jsx        # Footer with About/Contact links
 │   ├── Snackbar.jsx
 │   ├── StatusBadge.jsx

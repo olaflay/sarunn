@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { MapPin, Clock, DollarSign, Star, Package } from 'lucide-react';
+import { MapPin, Clock, Star, Package } from 'lucide-react';
 import RunnaShell from '@/components/RunnaShell';
-import DemoBar from '@/components/DemoBar';
 import BottomNav from '@/components/BottomNav';
 import StatusBadge from '@/components/StatusBadge';
 
@@ -22,7 +21,6 @@ export default function RunnerJobs() {
 
   return (
     <RunnaShell>
-      <DemoBar currentRole="Runner" />
       <div className="runna-screen bg-background">
         <div className="bg-white border-b border-border/40 px-4 py-4 sticky top-0 z-30">
           <h1 className="font-heading font-bold text-foreground text-lg mb-3">Job History</h1>

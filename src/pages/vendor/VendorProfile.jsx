@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Store, MapPin, Phone, Clock, ToggleRight, ToggleLeft, Star, ChevronDown } from 'lucide-react';
 import RunnaShell from '@/components/RunnaShell';
-import DemoBar from '@/components/DemoBar';
 import BottomNav from '@/components/BottomNav';
 import Snackbar from '@/components/Snackbar';
 import { CAMPUSES, LOCATIONS } from '@/lib/runnaData';
@@ -44,7 +43,6 @@ export default function VendorProfile() {
 
   return (
     <RunnaShell>
-      <DemoBar currentRole="Vendor" />
       <div className="runna-screen bg-background">
         {/* Header */}
         <div className="navy-gradient px-4 pt-6 pb-16 text-center">

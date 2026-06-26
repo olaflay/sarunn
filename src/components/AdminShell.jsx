@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, LayoutDashboard, Wallet, Users, AlertTriangle, Settings, ChevronDown, ChevronRight, MapPin } from 'lucide-react';
-import DemoBar from '@/components/DemoBar';
+import NetworkStatusBar from '@/components/NetworkStatusBar';
 
 const NAV = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/admin/dashboard' },
   { id: 'ledger', label: 'Ledger', icon: Wallet, path: '/admin/ledger' },
   {
-    id: 'users', label: 'Users', icon: Users, expandable: true,
+    id: 'users',
+    label: 'Users',
+    icon: Users,
+    expandable: true,
     children: [
       { label: 'Students', path: '/admin/users', tab: 'students' },
       { label: 'Vendors', path: '/admin/users', tab: 'vendors' },
@@ -28,59 +31,81 @@ export default function AdminShell({ children }) {
   const isActive = (path) => location.pathname === path;
   const usersActive = location.pathname === '/admin/users';
 
+  useEffect(() => {
+    if (!open) return undefined;
+
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [open]);
+
   const goTo = (path, tab) => {
     navigate(tab ? `${path}?tab=${tab}` : path);
     setOpen(false);
   };
 
   return (
-    <div className="w-full h-screen flex items-center justify-center navy-gradient">
-      <div className="runna-shell shadow-2xl flex flex-col relative">
-        <DemoBar currentRole="Admin" />
+    <div className="w-full min-h-[100dvh] flex items-center justify-center navy-gradient px-0 sm:px-4 py-0 sm:py-4">
+      <div className="runna-shell relative flex flex-col overflow-hidden shadow-[0_24px_80px_rgba(15,23,42,0.24)]">
+        <NetworkStatusBar />
 
-        {/* Top bar with hamburger */}
-        <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-border/40 flex-shrink-0 z-20">
+        <header className="flex items-center justify-between border-b border-border/40 bg-white/95 px-4 py-3 backdrop-blur-sm flex-shrink-0">
           <button
+            type="button"
             onClick={() => setOpen(true)}
-            className="w-9 h-9 rounded-xl flex items-center justify-center"
-            style={{ background: '#1B2B45' }}
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-slate-950 text-white transition-transform hover:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+            aria-expanded={open}
+            aria-controls="admin-drawer"
+            aria-label="Open admin navigation"
           >
-            <Menu size={18} color="white" />
+            <Menu size={18} aria-hidden="true" />
           </button>
-          <span className="font-heading font-bold text-foreground text-sm">Admin Panel</span>
-          <div className="w-9 h-9" />
-        </div>
+          <span className="font-heading text-sm font-semibold tracking-tight text-foreground">Admin Panel</span>
+          <div className="h-11 w-11" aria-hidden="true" />
+        </header>
 
-        {/* Scrollable content */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden bg-background">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden bg-background">
           {children}
-        </div>
+        </main>
 
-        {/* Backdrop */}
         {open && (
-          <div
-            className="absolute inset-0 bg-black/50 z-40 animate-fade-in"
+          <button
+            type="button"
+            className="absolute inset-0 z-40 bg-black/50 backdrop-blur-[1px]"
             onClick={() => setOpen(false)}
+            aria-label="Close admin navigation"
           />
         )}
 
-        {/* Slide-in drawer */}
-        <div
-          className={`absolute top-0 left-0 bottom-0 z-50 bg-white flex flex-col shadow-2xl transition-transform duration-300 ease-in-out ${open ? 'translate-x-0' : '-translate-x-full'}`}
-          style={{ width: '80%', maxWidth: '300px' }}
+        <aside
+          id="admin-drawer"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Admin navigation"
+          className={`absolute inset-y-0 left-0 z-50 flex w-[84%] max-w-[320px] flex-col bg-white shadow-[0_24px_80px_rgba(15,23,42,0.24)] transition-transform duration-300 ease-out ${open ? 'translate-x-0' : '-translate-x-full'}`}
         >
-          <div className="flex items-center justify-between px-5 py-4 flex-shrink-0" style={{ background: '#1B2B45' }}>
+          <div className="flex items-center justify-between bg-slate-950 px-5 py-4 text-white">
             <div>
-              <p className="font-heading font-bold text-white text-base">RUNNA</p>
-              <p className="text-white/50 text-xs">Admin Panel</p>
+              <p className="font-heading text-base font-semibold">RUNNA</p>
+              <p className="text-xs text-white/60">Admin Panel</p>
             </div>
-            <button onClick={() => setOpen(false)} className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-              <X size={16} color="white" />
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/10 transition hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white/80"
+              aria-label="Close admin navigation"
+            >
+              <X size={16} aria-hidden="true" />
             </button>
           </div>
 
-          <nav className="flex-1 overflow-y-auto py-2">
-            {NAV.map(item => {
+          <nav className="flex-1 overflow-y-auto py-2" aria-label="Admin sections">
+            {NAV.map((item) => {
               const Icon = item.icon;
               const active = isActive(item.path || '');
 
@@ -88,22 +113,23 @@ export default function AdminShell({ children }) {
                 return (
                   <div key={item.id}>
                     <button
-                      onClick={() => setUsersOpen(v => !v)}
-                      className="w-full flex items-center gap-3 px-5 py-3.5 transition-all"
-                      style={{ borderLeft: usersActive ? '3px solid #1B2B45' : '3px solid transparent', background: usersActive ? '#F0F2F7' : 'transparent' }}
+                      type="button"
+                      onClick={() => setUsersOpen((value) => !value)}
+                      className={`flex w-full items-center gap-3 border-l-4 px-5 py-3.5 text-left transition-colors ${usersActive ? 'border-slate-950 bg-slate-100' : 'border-transparent hover:bg-slate-50'}`}
+                      aria-expanded={usersOpen}
                     >
-                      <Icon size={18} color={usersActive ? '#1B2B45' : '#64748b'} />
-                      <span className="flex-1 text-sm font-medium" style={{ color: usersActive ? '#1B2B45' : '#374151' }}>{item.label}</span>
-                      {usersOpen ? <ChevronDown size={14} color="#94a3b8" /> : <ChevronRight size={14} color="#94a3b8" />}
+                      <Icon size={18} color={usersActive ? '#0f172a' : '#64748b'} aria-hidden="true" />
+                      <span className={`flex-1 text-sm font-medium ${usersActive ? 'text-slate-950' : 'text-slate-700'}`}>{item.label}</span>
+                      {usersOpen ? <ChevronDown size={14} color="#94a3b8" aria-hidden="true" /> : <ChevronRight size={14} color="#94a3b8" aria-hidden="true" />}
                     </button>
-                    {usersOpen && item.children.map(child => (
+                    {usersOpen && item.children.map((child) => (
                       <button
                         key={child.tab}
+                        type="button"
                         onClick={() => goTo(child.path, child.tab)}
-                        className="w-full flex items-center pl-14 pr-5 py-3 text-left hover:bg-muted/50"
-                        style={{ borderLeft: '3px solid transparent' }}
+                        className="flex w-full items-center border-l-4 border-transparent py-3 pl-14 pr-5 text-left text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900"
                       >
-                        <span className="text-sm text-muted-foreground font-medium">{child.label}</span>
+                        {child.label}
                       </button>
                     ))}
                   </div>
@@ -112,15 +138,16 @@ export default function AdminShell({ children }) {
 
               return (
                 <button
+                  type="button"
                   key={item.id}
                   onClick={() => goTo(item.path)}
-                  className="w-full flex items-center gap-3 px-5 py-3.5 transition-all"
-                  style={{ borderLeft: active ? '3px solid #1B2B45' : '3px solid transparent', background: active ? '#F0F2F7' : 'transparent' }}
+                  className={`flex w-full items-center gap-3 border-l-4 px-5 py-3.5 text-left transition-colors ${active ? 'border-slate-950 bg-slate-100' : 'border-transparent hover:bg-slate-50'}`}
+                  aria-current={active ? 'page' : undefined}
                 >
-                  <Icon size={18} color={active ? '#1B2B45' : '#64748b'} />
-                  <span className="flex-1 text-sm font-medium" style={{ color: active ? '#1B2B45' : '#374151' }}>{item.label}</span>
+                  <Icon size={18} color={active ? '#0f172a' : '#64748b'} aria-hidden="true" />
+                  <span className={`flex-1 text-sm font-medium ${active ? 'text-slate-950' : 'text-slate-700'}`}>{item.label}</span>
                   {item.badge && (
-                    <span className="min-w-[20px] h-5 px-1.5 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">
+                    <span className="flex min-w-[20px] h-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
                       {item.badge}
                     </span>
                   )}
@@ -129,12 +156,12 @@ export default function AdminShell({ children }) {
             })}
           </nav>
 
-          <div className="p-4 border-t border-border/40 flex-shrink-0">
-            <p className="text-xs text-muted-foreground text-center">RUNNA v1.0 · Admin</p>
+          <div className="border-t border-border/40 p-4 text-center">
+            <p className="text-xs text-muted-foreground">RUNNA v1.0 | Admin</p>
           </div>
-        </div>
+        </aside>
       </div>
-      <p className="absolute bottom-4 text-xs text-white/30 hidden md:block">RUNNA · Admin Panel</p>
+      <p className="absolute bottom-4 hidden text-xs text-white/30 md:block">RUNNA | Admin Panel</p>
     </div>
   );
 }

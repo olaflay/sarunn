@@ -38,37 +38,47 @@ export default function BottomNav({ role }) {
   const count = cartItemCount(cart);
 
   return (
-    <div className="bottom-nav">
-      {items.map(item => {
+    <nav className="bottom-nav" aria-label={`${role} navigation`}>
+      <div className="hidden md:flex md:flex-col md:gap-1 md:mb-4 md:px-3">
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">Runna</p>
+        <p className="text-lg font-semibold tracking-tight text-foreground">
+          {role.charAt(0).toUpperCase() + role.slice(1)}
+        </p>
+      </div>
+      {items.map((item) => {
         const Icon = item.icon;
-        const isActive = location.pathname === item.path || location.pathname.startsWith(item.path + '/');
+        const isActive = location.pathname === item.path || location.pathname.startsWith(`${item.path}/`);
+        const label = `${item.label}${isActive ? ', current page' : ''}`;
+
         return (
           <button
             key={item.path}
+            type="button"
             onClick={() => navigate(item.path)}
-            className="bottom-nav-item"
+            className={`bottom-nav-item ${isActive ? 'active' : ''} md:w-full md:items-start`}
+            aria-current={isActive ? 'page' : undefined}
+            aria-label={label}
+            title={item.label}
           >
-            <div className={`nav-indicator px-4 py-1 transition-all duration-200 relative ${isActive ? 'bg-blue-50 rounded-2xl' : ''}`}>
+            <span className="nav-indicator relative flex items-center justify-center transition-all duration-200 md:rounded-xl md:bg-transparent">
               <Icon
                 size={22}
-                strokeWidth={isActive ? 2.5 : 1.75}
-                color={isActive ? '#1E7CFF' : '#94a3b8'}
+                strokeWidth={isActive ? 2.5 : 1.9}
+                color={isActive ? '#1E7CFF' : '#64748b'}
+                aria-hidden="true"
               />
               {item.cartBadge && count > 0 && (
-                <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center border border-white">
+                <span className="absolute -right-1 -top-1 flex min-w-[16px] h-4 items-center justify-center rounded-full border border-white bg-red-500 px-1 text-[9px] font-bold text-white">
                   {count}
                 </span>
               )}
-            </div>
-            <span
-              className="text-xs font-medium transition-colors"
-              style={{ color: isActive ? '#1E7CFF' : '#94a3b8', fontSize: '0.6875rem' }}
-            >
+            </span>
+            <span className="text-[0.6875rem] font-medium leading-none md:text-sm md:font-medium md:tracking-tight">
               {item.label}
             </span>
           </button>
         );
       })}
-    </div>
+    </nav>
   );
 }

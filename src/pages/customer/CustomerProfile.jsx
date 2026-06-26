@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, MapPin, CreditCard, Bell, HelpCircle, LogOut, ChevronRight, Star } from 'lucide-react';
 import RunnaShell from '@/components/RunnaShell';
-import DemoBar from '@/components/DemoBar';
 import BottomNav from '@/components/BottomNav';
 
 const MENU_ITEMS = [
@@ -17,7 +16,6 @@ export default function CustomerProfile() {
   const navigate = useNavigate();
   return (
     <RunnaShell>
-      <DemoBar currentRole="Customer" />
       <div className="runna-screen bg-background">
         {/* Header */}
         <div className="navy-gradient px-4 pt-8 pb-16 text-center">

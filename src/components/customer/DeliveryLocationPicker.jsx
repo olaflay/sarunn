@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { X, MapPin, ChevronDown, Check } from 'lucide-react';
-import { getLocations, getSubLocations, getLocationLabel } from '@/lib/runnaData';
+import { X, ChevronDown, Check } from 'lucide-react';
+import { getLocations, getSubLocations } from '@/lib/runnaData';
 import { setDeliveryLocation, getDeliveryLocation } from '@/lib/runnaStore';
 
 /**

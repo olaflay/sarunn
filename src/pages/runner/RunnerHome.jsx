@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { ToggleRight, ToggleLeft, MapPin, DollarSign, Package, Clock, CheckCircle, X } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { ToggleRight, ToggleLeft, MapPin, Package, CheckCircle, X } from 'lucide-react';
 import RunnaShell from '@/components/RunnaShell';
-import DemoBar from '@/components/DemoBar';
 import BottomNav from '@/components/BottomNav';
 import Snackbar from '@/components/Snackbar';
 
@@ -171,7 +169,6 @@ export default function RunnerHome() {
 
   return (
     <RunnaShell>
-      <DemoBar currentRole="Runner" />
       <div className="runna-screen bg-background">
         {/* Header */}
         <div className="navy-gradient px-4 pt-6 pb-8">

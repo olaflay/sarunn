@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Search, CheckCircle, XCircle, User, Store, Bike, Shield } from 'lucide-react';
 import AdminShell from '@/components/AdminShell';
 import Snackbar from '@/components/Snackbar';
+import { EmptyState } from '@/components/PageStates';
 
 const TABS = ['Customers', 'Vendors', 'Runners'];
 
@@ -30,6 +31,9 @@ export default function AdminUsers() {
   const [runners, setRunners] = useState(MOCK_RUNNERS);
   const [customers, setCustomers] = useState(MOCK_CUSTOMERS);
   const [snack, setSnack] = useState('');
+  const filteredCustomers = customers.filter(c => !search || c.name.toLowerCase().includes(search.toLowerCase()));
+  const filteredVendors = vendors.filter(v => !search || v.name.toLowerCase().includes(search.toLowerCase()));
+  const filteredRunners = runners.filter(r => !search || r.name.toLowerCase().includes(search.toLowerCase()));
 
   const approveVendor = (id) => {
     setVendors(prev => prev.map(v => v.id === id ? { ...v, status: 'approved' } : v));
@@ -68,7 +72,13 @@ export default function AdminUsers() {
 
         <div className="px-4 pt-4">
           {/* Customers */}
-          {tab === 'Customers' && customers.filter(c => !search || c.name.toLowerCase().includes(search.toLowerCase())).map(c => (
+          {tab === 'Customers' && filteredCustomers.length === 0 ? (
+            <EmptyState
+              icon={User}
+              title="No customers found"
+              subtitle="Try a different search or clear the filter."
+            />
+          ) : tab === 'Customers' && filteredCustomers.map(c => (
             <div key={c.id} className="md3-card p-4 mb-3">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
@@ -92,7 +102,13 @@ export default function AdminUsers() {
           ))}
 
           {/* Vendors */}
-          {tab === 'Vendors' && vendors.filter(v => !search || v.name.toLowerCase().includes(search.toLowerCase())).map(v => (
+          {tab === 'Vendors' && filteredVendors.length === 0 ? (
+            <EmptyState
+              icon={Store}
+              title="No vendors found"
+              subtitle="Try a different search or clear the filter."
+            />
+          ) : tab === 'Vendors' && filteredVendors.map(v => (
             <div key={v.id} className="md3-card p-4 mb-3">
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-3">
@@ -124,7 +140,13 @@ export default function AdminUsers() {
           ))}
 
           {/* Runners */}
-          {tab === 'Runners' && runners.filter(r => !search || r.name.toLowerCase().includes(search.toLowerCase())).map(r => (
+          {tab === 'Runners' && filteredRunners.length === 0 ? (
+            <EmptyState
+              icon={Bike}
+              title="No runners found"
+              subtitle="Try a different search or clear the filter."
+            />
+          ) : tab === 'Runners' && filteredRunners.map(r => (
             <div key={r.id} className="md3-card p-4 mb-3">
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-3">

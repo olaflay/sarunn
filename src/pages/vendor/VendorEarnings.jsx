@@ -2,7 +2,6 @@ import React from 'react';
 import { TrendingUp, DollarSign, ShoppingBag, Star } from 'lucide-react';
 import { BarChart, Bar, XAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import RunnaShell from '@/components/RunnaShell';
-import DemoBar from '@/components/DemoBar';
 import BottomNav from '@/components/BottomNav';
 
 const WEEKLY_DATA = [
@@ -25,7 +24,6 @@ const STATS = [
 export default function VendorEarnings() {
   return (
     <RunnaShell>
-      <DemoBar currentRole="Vendor" />
       <div className="runna-screen bg-background">
         <div className="navy-gradient px-4 pt-6 pb-8">
           <h1 className="font-heading font-bold text-white text-lg mb-1">Earnings</h1>

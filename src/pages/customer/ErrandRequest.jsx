@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Package, Inbox, ChevronDown, CheckCircle, Loader, AlertTriangle, Info, ChevronRight, MapPin } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { runnaApi } from '@/lib/runnaClient';
 import RunnaShell from '@/components/RunnaShell';
-import DemoBar from '@/components/DemoBar';
 import Snackbar from '@/components/Snackbar';
 import { getCampus, getDeliveryLocation } from '@/lib/runnaStore';
 import DeliveryLocationPicker from '@/components/customer/DeliveryLocationPicker';
-import { getLocations, getSubLocations, calculateErrandFee, getLocationLabel, CAMPUSES } from '@/lib/runnaData';
+import { getLocations, getSubLocations, calculateErrandFee, getLocationLabel } from '@/lib/runnaData';
 
 const SIZES = [
   { id: 'small', label: 'Small', desc: 'Envelope, docs' },
@@ -100,7 +99,6 @@ export default function ErrandRequestPage() {
   if (step === 0) {
     return (
       <RunnaShell>
-        <DemoBar currentRole="Customer" />
         <div className="runna-screen bg-background flex flex-col">
 
           {/* Top bar with location capsule */}
@@ -110,7 +108,7 @@ export default function ErrandRequestPage() {
             </button>
             <button
               onClick={() => setLocPickerOpen(true)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-muted flex-1 max-w-[280px] m3-motion-standard active:scale-98"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-muted flex-1 max-w-[280px] m3-motion-standard active:scale-[0.98]"
             >
               <MapPin size={14} color={locLabel ? '#2E7D32' : '#F59E0B'} className="flex-shrink-0" />
               <span className="text-xs font-medium text-foreground truncate">
@@ -132,7 +130,7 @@ export default function ErrandRequestPage() {
                 setToMain(''); setToSub(''); setToNote('');
                 setStep(1);
               }}
-              className="relative flex-1 rounded-3xl overflow-hidden text-left m3-motion-emphasized active:scale-98"
+              className="relative flex-1 rounded-3xl overflow-hidden text-left m3-motion-emphasized active:scale-[0.98]"
               style={{ background: 'linear-gradient(135deg, #1B2B45 0%, #2A4374 100%)', minHeight: '180px' }}
             >
               {/* Decorative illustration circle */}
@@ -165,7 +163,7 @@ export default function ErrandRequestPage() {
                 setToNote(savedLoc?.note || '');
                 setStep(1);
               }}
-              className="relative flex-1 rounded-3xl overflow-hidden text-left m3-motion-emphasized active:scale-98"
+              className="relative flex-1 rounded-3xl overflow-hidden text-left m3-motion-emphasized active:scale-[0.98]"
               style={{ background: 'linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%)', minHeight: '180px' }}
             >
               {/* Decorative illustration circle */}
@@ -204,7 +202,6 @@ export default function ErrandRequestPage() {
   if (step === 2) {
     return (
       <RunnaShell>
-        <DemoBar currentRole="Customer" />
         <div className="runna-screen bg-background flex flex-col items-center justify-center px-8 text-center">
           <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6" style={{ background: '#E8F5F0' }}>
             <Loader size={36} color="#1B2B45" className="animate-spin" />
@@ -220,7 +217,6 @@ export default function ErrandRequestPage() {
   if (step === 3) {
     return (
       <RunnaShell>
-        <DemoBar currentRole="Customer" />
         <div className="runna-screen bg-background flex flex-col items-center justify-center px-8 text-center">
           <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6" style={{ background: '#E8F5E9' }}>
             <CheckCircle size={40} color="#2E7D32" />
@@ -253,7 +249,7 @@ export default function ErrandRequestPage() {
     if (!canSubmit) { setSnack('Please fill in all required fields'); return; }
     setStep(2);
     try {
-      await base44.entities.ErrandRequest.create({
+      await runnaApi.entities.ErrandRequest.create({
         customer_id: 'demo_customer',
         customer_name: senderName,
         title: `${mode === 'send' ? 'Send' : 'Receive'} package${description ? ` — ${description}` : ''}`,
@@ -272,7 +268,6 @@ export default function ErrandRequestPage() {
 
   return (
     <RunnaShell>
-      <DemoBar currentRole="Customer" />
       <div className="runna-screen bg-background">
         <div className="flex items-center gap-3 px-4 py-4 bg-white border-b border-border/40 sticky top-0 z-20">
           <button onClick={() => setStep(0)} className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">

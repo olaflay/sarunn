@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Star, Clock, MapPin, Plus } from 'lucide-react';
 import RunnaShell from '@/components/RunnaShell';
-import DemoBar from '@/components/DemoBar';
 import BottomNav from '@/components/BottomNav';
 import ProductModal from '@/components/customer/ProductModal';
 import { getVendor, getMenu } from '@/lib/runnaData';
-import { useCart, cartItemCount, vendorSubtotal } from '@/lib/runnaStore';
+import { useCart, vendorSubtotal } from '@/lib/runnaStore';
 
 export default function VendorDetail() {
   const { id } = useParams();
@@ -25,7 +24,6 @@ export default function VendorDetail() {
 
   return (
     <RunnaShell>
-      <DemoBar currentRole="Customer" />
       <div className="runna-screen bg-background">
         {/* Cover + Back */}
         <div className="relative">

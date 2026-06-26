@@ -1,14 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Mail, MapPin, Clock, Send, GraduationCap, Store, Bike } from 'lucide-react';
+import { ArrowLeft, GraduationCap, Store, Bike } from 'lucide-react';
 import RunnaShell from '@/components/RunnaShell';
-import DemoBar from '@/components/DemoBar';
 import PublicFooter from '@/components/PublicFooter';
 
 export default function About() {
   return (
     <RunnaShell>
-      <DemoBar currentRole="Customer" />
       <div className="runna-screen bg-background">
         <div className="flex items-center gap-3 px-4 py-4 bg-white border-b border-border/40 sticky top-0 z-30">
           <Link to="/customer/home" className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">

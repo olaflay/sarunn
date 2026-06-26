@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Settings, DollarSign, Bell, Shield, Globe, ChevronRight, ToggleRight, ToggleLeft } from 'lucide-react';
+import { Settings, DollarSign, Bell, Shield, Globe, ToggleRight, ToggleLeft } from 'lucide-react';
 import AdminShell from '@/components/AdminShell';
 import Snackbar from '@/components/Snackbar';
 

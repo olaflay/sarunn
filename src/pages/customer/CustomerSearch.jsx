@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search, X, Star, Clock } from 'lucide-react';
 import RunnaShell from '@/components/RunnaShell';
-import DemoBar from '@/components/DemoBar';
 import BottomNav from '@/components/BottomNav';
 
 const ALL_VENDORS = [
@@ -29,7 +28,6 @@ export default function CustomerSearch() {
 
   return (
     <RunnaShell>
-      <DemoBar currentRole="Customer" />
       <div className="runna-screen bg-background">
         {/* Search Header */}
         <div className="bg-white border-b border-border/40 px-4 py-4 sticky top-0 z-30">

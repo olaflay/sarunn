@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Edit2, Trash2, ToggleLeft, ToggleRight, X, Upload } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import React, { useState } from 'react';
+import { Plus, Edit2, Trash2, ToggleLeft, ToggleRight, X } from 'lucide-react';
 import RunnaShell from '@/components/RunnaShell';
-import DemoBar from '@/components/DemoBar';
 import BottomNav from '@/components/BottomNav';
 import Snackbar from '@/components/Snackbar';
+import { EmptyState } from '@/components/PageStates';
 
 const DEFAULT_ITEMS = [
   { id: 'm1', name: 'Classic Smash Burger', description: 'Double patty, cheddar, special sauce', price: 4500, category: 'Burgers', image_url: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=80&h=80&fit=crop', is_available: true },
@@ -87,9 +86,26 @@ export default function VendorMenu() {
 
   const categories = [...new Set(items.map(i => i.category))];
 
+  if (items.length === 0) {
+    return (
+      <RunnaShell>
+        <div className="runna-screen bg-background flex flex-col items-center justify-center px-8 text-center">
+          <EmptyState
+            title="Menu is empty"
+            subtitle="Add your first item to start accepting orders."
+            actionLabel="Add Item"
+            onAction={() => setModal('new')}
+          />
+        </div>
+        <BottomNav role="vendor" />
+        {modal && <ItemModal item={modal === 'new' ? null : modal} onClose={() => setModal(null)} onSave={handleSave} />}
+        <Snackbar message={snack} onClose={() => setSnack('')} />
+      </RunnaShell>
+    );
+  }
+
   return (
     <RunnaShell>
-      <DemoBar currentRole="Vendor" />
       <div className="runna-screen bg-background">
         <div className="flex items-center justify-between px-4 py-4 bg-white border-b border-border/40 sticky top-0 z-30">
           <div>

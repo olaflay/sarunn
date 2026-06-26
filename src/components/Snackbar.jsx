@@ -9,7 +9,7 @@ export default function Snackbar({ message, onClose, duration = 3000 }) {
 
   if (!message) return null;
   return (
-    <div className="snackbar animate-fade-in-up">
+    <div className="snackbar snackbar-enter">
       {message}
     </div>
   );

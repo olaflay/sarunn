@@ -639,7 +639,6 @@ safelist: [
 ### Page Structure
 ```jsx
 <RunnaShell>
-  <DemoBar currentRole="Customer" />
   <div className="runna-screen bg-background">
     {/* Sticky top bar */}
     <div className="sticky top-0 z-30 bg-white border-b border-border/40">

@@ -1,19 +1,27 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RunnaShell from '@/components/RunnaShell';
-import DemoBar from '@/components/DemoBar';
+import { useAuth } from '@/lib/AuthContext';
 
 export default function Splash() {
   const navigate = useNavigate();
+  const { user, authChecked, isLoadingAuth } = useAuth();
 
   useEffect(() => {
-    const t = setTimeout(() => navigate('/customer/home'), 2800);
+    const next = user?.role
+      ? {
+          admin: '/admin/dashboard',
+          vendor: '/vendor/orders',
+          runner: '/runner/home',
+          customer: '/customer/home',
+        }[user.role]
+      : '/login';
+    const t = setTimeout(() => navigate(next, { replace: true }), authChecked || !isLoadingAuth ? 900 : 2800);
     return () => clearTimeout(t);
-  }, [navigate]);
+  }, [navigate, user, authChecked, isLoadingAuth]);
 
   return (
     <RunnaShell>
-      <DemoBar currentRole="Customer" />
       <div
         className="flex-1 flex flex-col items-center justify-center"
         style={{ background: 'linear-gradient(135deg, #1B2B45 0%, #0F1E30 100%)' }}
@@ -38,7 +46,7 @@ export default function Splash() {
         {/* Tagline */}
         <div className="text-center animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
           <p className="text-white/90 font-heading font-bold text-xl mb-1">Food & Errands Delivery</p>
-          <p className="text-white/60 font-body text-sm">Fast. Fresh. Reliable.</p>
+          <p className="text-white/60 font-body text-sm">Campus commerce, built for speed.</p>
         </div>
 
         {/* Loading dots */}

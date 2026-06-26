@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, MapPin, CreditCard, Landmark, ShoppingCart, AlertTriangle, ChevronRight } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { runnaApi } from '@/lib/runnaClient';
 import RunnaShell from '@/components/RunnaShell';
-import DemoBar from '@/components/DemoBar';
 import Snackbar from '@/components/Snackbar';
 import DeliveryLocationPicker from '@/components/customer/DeliveryLocationPicker';
 import { getCart, clearVendorCart, vendorSubtotal, getDeliveryLocation, useCampus } from '@/lib/runnaStore';
 import { getVendor, getLocationLabel } from '@/lib/runnaData';
 
 const PAYMENT_METHODS = [
-  { id: 'card', label: 'Card Payment', icon: CreditCard, desc: 'Pay with debit / credit card' },
+  { id: 'card', label: 'Card Payment', icon: CreditCard, desc: 'Pay with debit or credit card' },
   { id: 'transfer', label: 'Bank Transfer', icon: Landmark, desc: 'Pay via bank transfer' },
 ];
 
@@ -34,7 +33,7 @@ export default function Checkout() {
     ? getLocationLabel(campusId, deliveryLoc.mainId, deliveryLoc.subId)
     : null;
   const locFull = locLabel
-    ? `${locLabel}${deliveryLoc?.note ? ', ' + deliveryLoc.note : ''}`
+    ? `${locLabel}${deliveryLoc?.note ? `, ${deliveryLoc.note}` : ''}`
     : '';
 
   const items = group ? Object.values(group.items) : [];
@@ -45,12 +44,11 @@ export default function Checkout() {
   if (!group) {
     return (
       <RunnaShell>
-        <DemoBar currentRole="Customer" />
-        <div className="runna-screen bg-background flex flex-col items-center justify-center text-center px-8">
-          <div className="text-5xl mb-4">🛒</div>
-          <h3 className="font-heading font-bold text-foreground text-base mb-1">Nothing to check out</h3>
-          <p className="text-muted-foreground text-sm mb-6">Your cart for this vendor is empty.</p>
-          <button onClick={() => navigate('/customer/orders')} className="text-white font-semibold rounded-2xl px-6 py-3 text-sm" style={{ background: '#1B2B45' }}>
+        <div className="runna-screen bg-background flex flex-col items-center justify-center px-6 text-center">
+          <div className="mb-4 text-5xl" aria-hidden="true">🛒</div>
+          <h3 className="font-heading text-base font-bold text-foreground">Nothing to check out</h3>
+          <p className="mb-6 text-sm text-muted-foreground">Your cart for this vendor is empty.</p>
+          <button onClick={() => navigate('/customer/orders')} className="btn-filled px-6">
             Back to Orders
           </button>
         </div>
@@ -59,18 +57,25 @@ export default function Checkout() {
   }
 
   const handlePlaceOrder = async () => {
-    // Enforce delivery location before checkout
     if (!deliveryLoc || !deliveryLoc.mainId) {
       setLocPickerOpen(true);
       setSnack('Please set your delivery location first');
       return;
     }
+
     setPlacing(true);
     try {
-      const orderItems = items.map(item => ({ item_id: item.id, name: item.name, price: item.price, quantity: item.qty }));
-      await base44.entities.Order.create({
+      const orderItems = items.map((item) => ({
+        item_id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.qty,
+      }));
+
+      await runnaApi.entities.Order.create({
         customer_id: 'demo_customer',
-        vendor_id: vendor.id || vendorId,
+        vendor_id: 'demo_vendor',
+        vendor_ref: vendor.id || vendorId,
         vendor_name: group.store_name,
         customer_name: 'Demo Customer',
         status: 'pending',
@@ -80,136 +85,169 @@ export default function Checkout() {
         total,
         delivery_address: locFull,
         notes: note,
-        payment_method: payment === 'transfer' ? 'card' : payment,
+        payment_method: payment,
         payment_status: 'paid',
         estimated_delivery_min: vendor.delivery_time_min || 30,
       });
+
       clearVendorCart(vendorId);
-      navigate('/customer/order-tracking', { state: { vendor: { store_name: group.store_name, delivery_time_min: vendor.delivery_time_min }, total } });
+      navigate('/customer/order-tracking', {
+        state: {
+          vendor: { store_name: group.store_name, delivery_time_min: vendor.delivery_time_min },
+          total,
+        },
+      });
     } catch {
       clearVendorCart(vendorId);
-      setSnack('Order placed! Tracking your delivery…');
-      setTimeout(() => navigate('/customer/order-tracking', { state: { vendor: { store_name: group.store_name }, total } }), 800);
+      setSnack('Order placed! Tracking your delivery...');
+      setTimeout(
+        () => navigate('/customer/order-tracking', { state: { vendor: { store_name: group.store_name }, total } }),
+        800,
+      );
     }
+
     setPlacing(false);
   };
 
   return (
     <RunnaShell>
-      <DemoBar currentRole="Customer" />
       <div className="runna-screen bg-background">
-        <div className="flex items-center gap-3 px-4 py-4 bg-white border-b border-border/40 sticky top-0 z-20">
-          <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
-            <ArrowLeft size={18} />
-          </button>
-          <h1 className="font-heading font-bold text-foreground text-lg">Checkout</h1>
-        </div>
-
-        <div className="px-4 pt-4 space-y-4">
-          {/* Delivery Location */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm border border-border/40">
-            <h3 className="font-semibold text-foreground text-sm mb-3 flex items-center gap-2">
-              <MapPin size={16} color="#1B2B45" /> Delivery Location
-            </h3>
+        <header className="sticky top-0 z-20 border-b border-border/40 bg-white/95 backdrop-blur-sm">
+          <div className="flex items-center gap-3 px-4 py-4 lg:px-6">
             <button
-              onClick={() => setLocPickerOpen(true)}
-              className="w-full flex items-center gap-3 p-3 rounded-xl border-2 text-left"
-              style={{ borderColor: locLabel ? '#1B2B45' : '#F59E0B', background: locLabel ? '#F0F2F7' : '#FFFBEB' }}
+              onClick={() => navigate(-1)}
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-muted transition hover:bg-muted/80"
+              aria-label="Go back"
             >
-              <MapPin size={16} color={locLabel ? '#1B2B45' : '#F59E0B'} />
-              <div className="flex-1 min-w-0">
-                {locLabel ? (
-                  <>
-                    <p className="text-sm font-semibold text-foreground">{locLabel}</p>
-                    {deliveryLoc?.note && <p className="text-xs text-muted-foreground truncate">{deliveryLoc.note}</p>}
-                  </>
-                ) : (
-                  <p className="text-sm font-semibold text-amber-700">⚠ Set delivery location (required)</p>
-                )}
-              </div>
-              <ChevronRight size={15} color="#94a3b8" />
+              <ArrowLeft size={18} aria-hidden="true" />
             </button>
+            <div className="min-w-0">
+              <h1 className="font-heading text-lg font-bold text-foreground lg:text-xl">Checkout</h1>
+              <p className="text-xs text-muted-foreground">Review your delivery details before placing the order</p>
+            </div>
           </div>
+        </header>
 
-          {/* Order Summary */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm border border-border/40">
-            <h3 className="font-semibold text-foreground text-sm mb-3 flex items-center gap-2">
-              <ShoppingCart size={16} color="#1B2B45" /> {group.store_name}
-            </h3>
-            <div className="space-y-2">
-              {items.map(item => (
-                <div key={item.id} className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">{item.qty}× {item.name}</span>
-                  <span className="font-medium text-foreground">₦{(item.qty * item.price).toLocaleString()}</span>
+        <div className="px-4 py-4 lg:px-6 lg:py-6">
+          <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-6">
+            <div className="space-y-4">
+              <section className="rounded-[24px] border border-border/40 bg-card p-4 shadow-sm lg:p-5">
+                <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-foreground">
+                  <MapPin size={16} color="#1B2B45" aria-hidden="true" />
+                  Delivery Location
+                </h3>
+                <button
+                  onClick={() => setLocPickerOpen(true)}
+                  className="flex w-full items-center gap-3 rounded-2xl border-2 p-3 text-left transition-colors hover:bg-muted/40"
+                  style={{ borderColor: locLabel ? '#1B2B45' : '#F59E0B', background: locLabel ? '#F0F2F7' : '#FFFBEB' }}
+                >
+                  <MapPin size={16} color={locLabel ? '#1B2B45' : '#F59E0B'} aria-hidden="true" />
+                  <div className="min-w-0 flex-1">
+                    {locLabel ? (
+                      <>
+                        <p className="text-sm font-semibold text-foreground">{locLabel}</p>
+                        {deliveryLoc?.note && <p className="truncate text-xs text-muted-foreground">{deliveryLoc.note}</p>}
+                      </>
+                    ) : (
+                      <p className="text-sm font-semibold text-amber-700">Set delivery location before ordering</p>
+                    )}
+                  </div>
+                  <ChevronRight size={15} color="#94a3b8" aria-hidden="true" />
+                </button>
+              </section>
+
+              <section className="rounded-[24px] border border-border/40 bg-card p-4 shadow-sm lg:p-5">
+                <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-foreground">
+                  <CreditCard size={16} color="#1B2B45" aria-hidden="true" />
+                  Payment Method
+                </h3>
+                <div className="space-y-2">
+                  {PAYMENT_METHODS.map((method) => {
+                    const Icon = method.icon;
+                    const selected = payment === method.id;
+                    return (
+                      <button
+                        key={method.id}
+                        onClick={() => setPayment(method.id)}
+                        className="flex w-full items-center gap-3 rounded-2xl border-2 p-3 text-left transition-colors hover:bg-muted/40"
+                        style={{ borderColor: selected ? '#1B2B45' : 'hsl(var(--border))', background: selected ? '#F0F2F7' : 'white' }}
+                      >
+                        <Icon size={20} color={selected ? '#1B2B45' : '#94a3b8'} aria-hidden="true" />
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-semibold text-foreground">{method.label}</p>
+                          <p className="text-xs text-muted-foreground">{method.desc}</p>
+                        </div>
+                        <div className={`flex h-4 w-4 items-center justify-center rounded-full border-2 ${selected ? 'border-slate-800' : 'border-slate-300'}`}>
+                          {selected && <div className="h-2 w-2 rounded-full bg-slate-800" />}
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
-              ))}
-            </div>
-            <div className="border-t border-border/40 mt-3 pt-3 space-y-1.5">
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Subtotal</span>
-                <span className="font-medium">₦{subtotal.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Delivery Fee</span>
-                <span className="font-medium">₦{deliveryFee.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between text-sm font-bold border-t border-border/40 pt-2 mt-2">
-                <span>Total</span>
-                <span style={{ color: '#1B2B45' }}>₦{total.toLocaleString()}</span>
-              </div>
-            </div>
-          </div>
+              </section>
 
-          {/* Payment Method */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm border border-border/40">
-            <h3 className="font-semibold text-foreground text-sm mb-3">Payment Method</h3>
-            <div className="space-y-2">
-              {PAYMENT_METHODS.map(method => {
-                const Icon = method.icon;
-                const selected = payment === method.id;
-                return (
-                  <button
-                    key={method.id}
-                    onClick={() => setPayment(method.id)}
-                    className="w-full flex items-center gap-3 p-3 rounded-xl border-2 transition-all text-left"
-                    style={{ borderColor: selected ? '#1B2B45' : 'hsl(var(--border))', background: selected ? '#F0F2F7' : 'white' }}
-                  >
-                    <Icon size={20} color={selected ? '#1B2B45' : '#94a3b8'} />
-                    <div className="flex-1">
-                      <p className="text-sm font-semibold text-foreground">{method.label}</p>
-                      <p className="text-xs text-muted-foreground">{method.desc}</p>
+              <section className="rounded-[24px] border border-border/40 bg-card p-4 shadow-sm lg:p-5">
+                <h3 className="mb-3 text-sm font-semibold text-foreground">Special Instructions</h3>
+                <textarea
+                  className="md3-input min-h-28 resize-none"
+                  rows={4}
+                  placeholder="Any special requests?"
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                />
+              </section>
+
+              {!locLabel && (
+                <div className="flex items-start gap-2 rounded-2xl bg-amber-50 px-4 py-3 text-xs font-medium text-amber-900">
+                  <AlertTriangle size={14} className="mt-0.5 shrink-0" color="#F59E0B" aria-hidden="true" />
+                  <span>You must set your delivery location before placing the order.</span>
+                </div>
+              )}
+
+              <button
+                onClick={handlePlaceOrder}
+                disabled={placing}
+                className="btn-filled w-full px-6 text-base"
+              >
+                {placing ? 'Placing order...' : `Place Order · ₦${total.toLocaleString()}`}
+              </button>
+            </div>
+
+            <aside className="lg:sticky lg:top-6">
+              <section className="rounded-[28px] border border-border/40 bg-card p-4 shadow-sm lg:p-5">
+                <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-foreground">
+                  <ShoppingCart size={16} color="#1B2B45" aria-hidden="true" />
+                  {group.store_name}
+                </h3>
+
+                <div className="space-y-2">
+                  {items.map((item) => (
+                    <div key={item.id} className="flex items-start justify-between gap-4 text-sm">
+                      <span className="min-w-0 flex-1 text-muted-foreground">
+                        {item.qty}× {item.name}
+                      </span>
+                      <span className="font-medium text-foreground">₦{(item.qty * item.price).toLocaleString()}</span>
                     </div>
-                    <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${selected ? 'border-slate-800' : 'border-slate-300'}`}>
-                      {selected && <div className="w-2 h-2 rounded-full" style={{ background: '#1B2B45' }} />}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
+                  ))}
+                </div>
+
+                <div className="mt-4 space-y-2 border-t border-border/40 pt-4">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Subtotal</span>
+                    <span className="font-medium">₦{subtotal.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Delivery Fee</span>
+                    <span className="font-medium">₦{deliveryFee.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between border-t border-border/40 pt-3 text-sm font-bold">
+                    <span>Total</span>
+                    <span style={{ color: '#1B2B45' }}>₦{total.toLocaleString()}</span>
+                  </div>
+                </div>
+              </section>
+            </aside>
           </div>
-
-          {/* Special Instructions */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm border border-border/40">
-            <h3 className="font-semibold text-foreground text-sm mb-3">Special Instructions</h3>
-            <textarea className="md3-input text-sm resize-none" rows={3} placeholder="Any special requests?" value={note} onChange={e => setNote(e.target.value)} />
-          </div>
-
-          {!locLabel && (
-            <div className="flex items-center gap-2 p-3 rounded-xl text-xs font-medium" style={{ background: '#FFFBEB', color: '#92400E' }}>
-              <AlertTriangle size={14} color="#F59E0B" />
-              You must set your delivery location before placing the order.
-            </div>
-          )}
-
-          <button
-            onClick={handlePlaceOrder}
-            disabled={placing}
-            className="w-full text-white font-semibold rounded-2xl py-4 text-base"
-            style={{ background: '#1B2B45', opacity: placing ? 0.6 : 1 }}
-          >
-            {placing ? 'Placing Order…' : `Place Order · ₦${total.toLocaleString()}`}
-          </button>
-          <div className="h-4" />
         </div>
       </div>
 

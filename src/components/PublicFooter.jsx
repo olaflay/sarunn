@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 
 export default function PublicFooter() {
   return (
-    <footer className="bg-white border-t border-border/40 px-4 py-6 mt-4">
-      <div className="flex items-center justify-between max-w-md mx-auto">
-        <p className="text-xs text-muted-foreground font-medium">© {new Date().getFullYear()} RUNNA</p>
-        <nav className="flex items-center gap-4">
-          <Link to="/about" className="text-xs font-medium text-foreground hover:text-primary transition-colors">
+    <footer className="border-t border-border/40 bg-white px-4 py-6 md:hidden">
+      <div className="mx-auto flex max-w-md flex-col items-center justify-between gap-3 sm:flex-row">
+        <p className="text-xs font-medium text-muted-foreground">© {new Date().getFullYear()} RUNNA</p>
+        <nav className="flex items-center gap-4" aria-label="Public pages">
+          <Link to="/about" className="text-xs font-medium text-foreground transition-colors hover:text-primary">
             About
           </Link>
-          <Link to="/contact" className="text-xs font-medium text-foreground hover:text-primary transition-colors">
+          <Link to="/contact" className="text-xs font-medium text-foreground transition-colors hover:text-primary">
             Contact
           </Link>
         </nav>

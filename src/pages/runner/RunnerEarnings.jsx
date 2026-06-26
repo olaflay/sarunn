@@ -2,7 +2,6 @@ import React from 'react';
 import { DollarSign, Package, Star, TrendingUp } from 'lucide-react';
 import { BarChart, Bar, XAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import RunnaShell from '@/components/RunnaShell';
-import DemoBar from '@/components/DemoBar';
 import BottomNav from '@/components/BottomNav';
 
 const WEEKLY = [
@@ -19,7 +18,6 @@ export default function RunnerEarnings() {
   const total = WEEKLY.reduce((s, d) => s + d.amount, 0);
   return (
     <RunnaShell>
-      <DemoBar currentRole="Runner" />
       <div className="runna-screen bg-background">
         <div className="navy-gradient px-4 pt-6 pb-8">
           <h1 className="font-heading font-bold text-white text-lg mb-1">Earnings</h1>

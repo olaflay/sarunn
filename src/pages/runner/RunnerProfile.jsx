@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { User, Star, MapPin, Phone, Bike, ToggleRight, ToggleLeft, ChevronRight, HelpCircle, LogOut, Shield } from 'lucide-react';
 import RunnaShell from '@/components/RunnaShell';
-import DemoBar from '@/components/DemoBar';
 import BottomNav from '@/components/BottomNav';
 import Snackbar from '@/components/Snackbar';
 
@@ -11,7 +10,6 @@ export default function RunnerProfile() {
 
   return (
     <RunnaShell>
-      <DemoBar currentRole="Runner" />
       <div className="runna-screen bg-background">
         <div className="navy-gradient px-4 pt-6 pb-16 text-center">
           <div className="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-3 border-4 border-white/30">
