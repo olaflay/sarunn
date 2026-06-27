@@ -1,9 +1,9 @@
 import { createStore } from '@/store/zustandLite';
 
-const CART_KEY = 'runna_cart';
-const LOC_KEY = 'runna_delivery_loc';
-const CART_EVENT = 'runna:cart';
-const LOC_EVENT = 'runna:deliveryloc';
+const CART_KEY = 'sarunn_cart';
+const LOC_KEY = 'sarunn_delivery_loc';
+const CART_EVENT = 'sarunn:cart';
+const LOC_EVENT = 'sarunn:deliveryloc';
 const isClient = typeof window !== 'undefined';
 
 function read(key) {

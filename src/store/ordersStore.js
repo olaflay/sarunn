@@ -1,5 +1,5 @@
 import { createStore } from '@/store/zustandLite';
-import { runnaApi } from '@/lib/runnaClient';
+import { sarunnApi } from '@/lib/runnaClient';
 
 export const useOrdersStore = createStore((set, get) => ({
   orders: [],
@@ -8,7 +8,7 @@ export const useOrdersStore = createStore((set, get) => ({
   hydrateOrders: async () => {
     set({ isLoading: true, error: null });
     try {
-      const data = await runnaApi.entities.Order.list('-created_date', 50);
+      const data = await sarunnApi.entities.Order.list('-created_date', 50);
       set({ orders: data, isLoading: false });
       return data;
     } catch (error) {
@@ -22,7 +22,7 @@ export const useOrdersStore = createStore((set, get) => ({
   },
   setOrders: (orders) => set({ orders }),
   updateOrderStatus: async (orderId, status) => {
-    const updated = await runnaApi.entities.Order.update(orderId, { status });
+    const updated = await sarunnApi.entities.Order.update(orderId, { status });
     set({
       orders: get().orders.map((order) => (order.id === orderId ? updated : order)),
     });

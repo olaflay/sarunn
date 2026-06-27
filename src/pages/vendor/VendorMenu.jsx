@@ -89,7 +89,7 @@ export default function VendorMenu() {
   if (items.length === 0) {
     return (
       <RunnaShell>
-        <div className="runna-screen bg-background flex flex-col items-center justify-center px-8 text-center">
+        <div className="sarunn-screen bg-background flex flex-col items-center justify-center px-8 text-center">
           <EmptyState
             title="Menu is empty"
             subtitle="Add your first item to start accepting orders."
@@ -106,7 +106,7 @@ export default function VendorMenu() {
 
   return (
     <RunnaShell>
-      <div className="runna-screen bg-background">
+      <div className="sarunn-screen bg-background">
         <div className="flex items-center justify-between px-4 py-4 bg-white border-b border-border/40 sticky top-0 z-30">
           <div>
             <h1 className="font-heading font-bold text-foreground text-lg">Menu</h1>

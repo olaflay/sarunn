@@ -1,13 +1,13 @@
 import { createStore } from '@/store/zustandLite';
 
-const PROFILE_KEY = 'runna_profile';
+const PROFILE_KEY = 'sarunn_profile';
 const isClient = typeof window !== 'undefined';
 
 const defaultProfile = {
   full_name: 'Demo Customer',
-  email: 'demo@runna.app',
+  email: 'demo@sarunn.app',
   phone: '',
-  bio: 'Campus-first user on RUNNA.',
+  bio: 'Campus-first user on SARUNN.',
   rating: 4.9,
   orders: 23,
   errands: 8,

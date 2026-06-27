@@ -18,7 +18,7 @@ export default function PageNotFound() {
             <Compass size={20} />
           </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Runna</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Sarunn</p>
             <h1 className="text-2xl font-semibold text-slate-950">Page not found</h1>
           </div>
         </div>

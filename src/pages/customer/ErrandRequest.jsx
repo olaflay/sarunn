@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Package, Inbox, ChevronDown, CheckCircle, Loader, AlertTriangle, Info, ChevronRight, MapPin } from 'lucide-react';
-import { runnaApi } from '@/lib/runnaClient';
+import { sarunnApi } from '@/lib/runnaClient';
 import RunnaShell from '@/components/RunnaShell';
 import Snackbar from '@/components/Snackbar';
 import { getCampus, getDeliveryLocation } from '@/lib/runnaStore';
@@ -99,7 +99,7 @@ export default function ErrandRequestPage() {
   if (step === 0) {
     return (
       <RunnaShell>
-        <div className="runna-screen bg-background flex flex-col">
+        <div className="sarunn-screen bg-background flex flex-col">
 
           {/* Top bar with location capsule */}
           <div className="flex items-center gap-3 px-4 py-4 bg-white border-b border-border/40 sticky top-0 z-30">
@@ -202,7 +202,7 @@ export default function ErrandRequestPage() {
   if (step === 2) {
     return (
       <RunnaShell>
-        <div className="runna-screen bg-background flex flex-col items-center justify-center px-8 text-center">
+        <div className="sarunn-screen bg-background flex flex-col items-center justify-center px-8 text-center">
           <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6" style={{ background: '#E8F5F0' }}>
             <Loader size={36} color="#1B2B45" className="animate-spin" />
           </div>
@@ -217,7 +217,7 @@ export default function ErrandRequestPage() {
   if (step === 3) {
     return (
       <RunnaShell>
-        <div className="runna-screen bg-background flex flex-col items-center justify-center px-8 text-center">
+        <div className="sarunn-screen bg-background flex flex-col items-center justify-center px-8 text-center">
           <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6" style={{ background: '#E8F5E9' }}>
             <CheckCircle size={40} color="#2E7D32" />
           </div>
@@ -249,7 +249,7 @@ export default function ErrandRequestPage() {
     if (!canSubmit) { setSnack('Please fill in all required fields'); return; }
     setStep(2);
     try {
-      await runnaApi.entities.ErrandRequest.create({
+      await sarunnApi.entities.ErrandRequest.create({
         customer_id: 'demo_customer',
         customer_name: senderName,
         title: `${mode === 'send' ? 'Send' : 'Receive'} package${description ? ` — ${description}` : ''}`,
@@ -268,7 +268,7 @@ export default function ErrandRequestPage() {
 
   return (
     <RunnaShell>
-      <div className="runna-screen bg-background">
+      <div className="sarunn-screen bg-background">
         <div className="flex items-center gap-3 px-4 py-4 bg-white border-b border-border/40 sticky top-0 z-20">
           <button onClick={() => setStep(0)} className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
             <ArrowLeft size={18} />

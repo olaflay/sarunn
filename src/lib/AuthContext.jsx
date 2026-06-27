@@ -9,7 +9,7 @@ export function AuthProvider({ children }) {
   const isLoadingAuth = useAuthStore((state) => state.isLoadingAuth);
   const authChecked = useAuthStore((state) => state.authChecked);
   const authError = useAuthStore((state) => state.authError);
-  const [appPublicSettings] = useState({ id: 'runna-local', public_settings: { standalone: true } });
+  const [appPublicSettings] = useState({ id: 'sarunn-local', public_settings: { standalone: true } });
   const [isLoadingPublicSettings, setIsLoadingPublicSettings] = useState(false);
 
   useEffect(() => {

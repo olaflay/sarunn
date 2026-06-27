@@ -16,14 +16,14 @@ export default function CustomerProfile() {
   const navigate = useNavigate();
   return (
     <RunnaShell>
-      <div className="runna-screen bg-background">
+      <div className="sarunn-screen bg-background">
         {/* Header */}
         <div className="navy-gradient px-4 pt-8 pb-16 text-center">
           <div className="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-3 border-4 border-white/30">
             <User size={36} color="white" />
           </div>
           <h2 className="font-heading font-bold text-white text-xl">Demo Customer</h2>
-          <p className="text-white/60 text-sm">demo@runna.app</p>
+          <p className="text-white/60 text-sm">demo@sarunn.app</p>
           <div className="flex items-center justify-center gap-2 mt-2">
             <Star size={14} fill="#FCD34D" color="#FCD34D" />
             <span className="text-white/80 text-sm font-medium">4.9 Customer Rating</span>

@@ -43,7 +43,7 @@ export default function VendorProfile() {
 
   return (
     <RunnaShell>
-      <div className="runna-screen bg-background">
+      <div className="sarunn-screen bg-background">
         {/* Header */}
         <div className="navy-gradient px-4 pt-6 pb-16 text-center">
           <div className="w-20 h-20 rounded-2xl bg-white/20 flex items-center justify-center mx-auto mb-3 border-4 border-white/30 overflow-hidden">

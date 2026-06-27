@@ -1,5 +1,5 @@
 export {
-  runnaApi,
+  sarunnApi,
   getCurrentSessionUser,
   signInWithDemoRole,
   getAvailableDemoAccounts,

@@ -10,7 +10,7 @@ export default function AdminSettings() {
     notificationsEnabled: true,
     deliveryFeeBase: '1500',
     platformFeePercent: '10',
-    supportEmail: 'support@runna.app',
+    supportEmail: 'support@sarunn.app',
   });
   const [snack, setSnack] = useState('');
 
@@ -88,7 +88,7 @@ export default function AdminSettings() {
           <div className="bg-white rounded-2xl p-4 shadow-sm border border-border/40">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-semibold text-foreground text-sm">RUNNA App</p>
+                <p className="font-semibold text-foreground text-sm">SARUNN App</p>
                 <p className="text-muted-foreground text-xs">Version 1.0.0 · Build 2026.06.19</p>
               </div>
               <div className="text-right">

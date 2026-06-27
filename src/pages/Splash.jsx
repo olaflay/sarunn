@@ -39,7 +39,7 @@ export default function Splash() {
             <rect x="0" y="37" width="9" height="5" rx="1" fill="rgba(255,255,255,0.3)" />
           </svg>
           <span className="text-white font-display font-black tracking-widest" style={{ fontSize: '2rem', letterSpacing: '0.1em' }}>
-            RUNNA
+            SARUNN
           </span>
         </div>
 

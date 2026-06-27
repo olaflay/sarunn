@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
-import { runnaApi } from '@/lib/runnaClient';
+import { sarunnApi } from '@/lib/runnaClient';
 import AdminShell from '@/components/AdminShell';
 import StatusBadge from '@/components/StatusBadge';
 import Snackbar from '@/components/Snackbar';
@@ -28,7 +28,7 @@ export default function AdminOrders() {
     let alive = true;
     setLoading(true);
     setError('');
-    runnaApi.entities.Order.list('-created_date', 30)
+    sarunnApi.entities.Order.list('-created_date', 30)
       .then(data => { if (alive && data.length) setOrders(data); })
       .catch(() => { if (alive) setError('Unable to load live order data right now.'); })
       .finally(() => { if (alive) setLoading(false); });
@@ -68,7 +68,7 @@ export default function AdminOrders() {
   const handleCancel = async (order) => {
     setOrders(prev => prev.map(o => o.id === order.id ? { ...o, status: 'cancelled' } : o));
     setSnack('Order cancelled and parties notified.');
-    try { await runnaApi.entities.Order.update(order.id, { status: 'cancelled' }); } catch {}
+    try { await sarunnApi.entities.Order.update(order.id, { status: 'cancelled' }); } catch {}
   };
 
   return (

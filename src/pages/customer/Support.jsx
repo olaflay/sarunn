@@ -13,8 +13,8 @@ const FAQS = [
 
 const CONTACTS = [
   { id: 'chat', label: 'Live Chat', desc: 'Avg. reply under 2 min', icon: MessageCircle },
-  { id: 'call', label: 'Call Us', desc: '+234 800 RUNNA 00', icon: Phone },
-  { id: 'email', label: 'Email Support', desc: 'help@runna.ng', icon: Mail },
+  { id: 'call', label: 'Call Us', desc: '+234 800 SARUNN 00', icon: Phone },
+  { id: 'email', label: 'Email Support', desc: 'help@sarunn.ng', icon: Mail },
 ];
 
 export default function Support() {
@@ -30,7 +30,7 @@ export default function Support() {
 
   return (
     <RunnaShell>
-      <div className="runna-screen bg-background">
+      <div className="sarunn-screen bg-background">
         <div className="flex items-center gap-3 px-4 py-4 bg-white border-b border-border/40 sticky top-0 z-30">
           <Headset size={20} color="#1B2B45" />
           <h1 className="font-heading font-bold text-foreground text-lg">Support</h1>

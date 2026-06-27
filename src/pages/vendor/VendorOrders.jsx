@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Bell, CheckCircle, XCircle, Clock, Package } from 'lucide-react';
-import { runnaApi } from '@/lib/runnaClient';
+import { sarunnApi } from '@/lib/runnaClient';
 import RunnaShell from '@/components/RunnaShell';
 import BottomNav from '@/components/BottomNav';
 import StatusBadge from '@/components/StatusBadge';
@@ -67,7 +67,7 @@ export default function VendorOrders() {
     let alive = true;
     setLoading(true);
     setError('');
-    runnaApi.entities.Order.filter({ vendor_id: 'demo_vendor' }, '-created_date', 20)
+    sarunnApi.entities.Order.filter({ vendor_id: 'demo_vendor' }, '-created_date', 20)
       .then(data => { if (alive && data.length) setOrders(data); })
       .catch(() => { if (alive) setError('Unable to load live orders right now.'); })
       .finally(() => { if (alive) setLoading(false); });
@@ -78,7 +78,7 @@ export default function VendorOrders() {
     setOrders(prev => prev.map(o => o.id === order.id ? { ...o, status: newStatus } : o));
     const msgs = { confirmed: '✅ Order accepted!', ready: '📦 Marked as ready for pickup!', cancelled: '❌ Order rejected.' };
     setSnack(msgs[newStatus] || 'Status updated');
-    try { await runnaApi.entities.Order.update(order.id, { status: newStatus }); } catch {}
+    try { await sarunnApi.entities.Order.update(order.id, { status: newStatus }); } catch {}
   };
 
   const filtered = tab === 'All' ? orders
@@ -91,7 +91,7 @@ export default function VendorOrders() {
   if (loading) {
     return (
       <RunnaShell>
-        <div className="runna-screen bg-background">
+        <div className="sarunn-screen bg-background">
           <div className="bg-white border-b border-border/40 px-4 py-4 sticky top-0 z-30">
             <div className="flex items-center justify-between">
               <div>
@@ -114,7 +114,7 @@ export default function VendorOrders() {
 
   return (
     <RunnaShell>
-      <div className="runna-screen bg-background">
+      <div className="sarunn-screen bg-background">
         {/* Header */}
         <div className="bg-white border-b border-border/40 px-4 py-4 sticky top-0 z-30">
           <div className="flex items-center justify-between">

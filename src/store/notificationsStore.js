@@ -1,6 +1,6 @@
 import { createStore } from '@/store/zustandLite';
 
-const NOTIFY_KEY = 'runna_notifications';
+const NOTIFY_KEY = 'sarunn_notifications';
 const isClient = typeof window !== 'undefined';
 
 const seedNotifications = [

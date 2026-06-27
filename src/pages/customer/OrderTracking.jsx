@@ -37,7 +37,7 @@ export default function OrderTracking() {
   if (showReview) {
     return (
       <RunnaShell>
-        <div className="runna-screen bg-background px-4 py-6 lg:px-6 lg:py-8">
+        <div className="sarunn-screen bg-background px-4 py-6 lg:px-6 lg:py-8">
           <div className="mx-auto flex max-w-5xl items-start justify-center lg:justify-start">
             <div className="grid w-full gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
               <section className="rounded-[28px] border border-border/40 bg-card p-6 text-center shadow-sm">
@@ -97,7 +97,7 @@ export default function OrderTracking() {
 
   return (
     <RunnaShell>
-      <div className="runna-screen bg-background">
+      <div className="sarunn-screen bg-background">
         <header className="border-b border-border/40 bg-white/95 px-4 pb-4 pt-6 backdrop-blur-sm lg:px-6">
           <div className="mx-auto flex max-w-5xl items-start gap-4">
             <div className="flex min-w-0 flex-1 items-center gap-3">

@@ -36,7 +36,7 @@ export default function CustomerHome() {
 
   return (
     <RunnaShell>
-      <div className="runna-screen bg-background">
+      <div className="sarunn-screen bg-background">
         <header className="sticky top-0 z-30 border-b border-border/40 bg-white/95 backdrop-blur-sm">
           <div className="flex items-center justify-between px-4 pb-3 pt-4 lg:px-6">
             <div className="flex items-center gap-2.5">
@@ -44,7 +44,7 @@ export default function CustomerHome() {
                 <span className="font-heading text-sm font-extrabold text-white">R</span>
               </div>
               <div>
-                <p className="font-heading text-lg font-extrabold leading-none text-slate-950">RUNNA</p>
+                <p className="font-heading text-lg font-extrabold leading-none text-slate-950">SARUNN</p>
                 <p className="mt-0.5 text-[10px] text-muted-foreground">Campus delivery, made easy</p>
               </div>
             </div>

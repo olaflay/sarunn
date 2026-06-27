@@ -17,7 +17,7 @@ export default function Contact() {
 
   return (
     <RunnaShell>
-      <div className="runna-screen bg-background">
+      <div className="sarunn-screen bg-background">
         <div className="flex items-center gap-3 px-4 py-4 bg-white border-b border-border/40 sticky top-0 z-30">
           <Link to="/customer/home" className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
             <ArrowLeft size={18} />
@@ -38,8 +38,8 @@ export default function Contact() {
               </div>
               <div className="flex-1">
                 <p className="text-xs text-muted-foreground font-medium">Email</p>
-                <a href="mailto:support@runna.app" className="text-sm font-semibold text-foreground hover:text-primary transition-colors">
-                  support@runna.app
+                <a href="mailto:support@sarunn.app" className="text-sm font-semibold text-foreground hover:text-primary transition-colors">
+                  support@sarunn.app
                 </a>
               </div>
             </div>

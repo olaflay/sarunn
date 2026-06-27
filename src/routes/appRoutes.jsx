@@ -24,16 +24,19 @@ import VendorProfile from '@/pages/vendor/VendorProfile';
 
 import RunnerHome from '@/pages/runner/RunnerHome';
 import RunnerJobs from '@/pages/runner/RunnerJobs';
+import RunnerRunDetail from '@/pages/runner/RunnerRunDetail';
 import RunnerEarnings from '@/pages/runner/RunnerEarnings';
 import RunnerProfile from '@/pages/runner/RunnerProfile';
 
 import AdminDashboard from '@/pages/admin/AdminDashboard';
 import AdminOrders from '@/pages/admin/AdminOrders';
 import AdminUsers from '@/pages/admin/AdminUsers';
+import AdminUserDetails from '@/pages/admin/AdminUserDetails';
 import AdminSettings from '@/pages/admin/AdminSettings';
 import AdminPricing from '@/pages/admin/AdminPricing';
 import AdminLedger from '@/pages/admin/AdminLedger';
 import AdminDisputes from '@/pages/admin/AdminDisputes';
+import AdminPayments from '@/pages/admin/AdminPayments';
 
 export const PUBLIC_ROUTES = [
   { path: '/', Component: Splash },
@@ -70,6 +73,7 @@ export const ROLE_ROUTES = {
   runner: [
     { path: '/runner/home', Component: RunnerHome },
     { path: '/runner/jobs', Component: RunnerJobs },
+    { path: '/runner/jobs/:runId', Component: RunnerRunDetail },
     { path: '/runner/earnings', Component: RunnerEarnings },
     { path: '/runner/profile', Component: RunnerProfile },
   ],
@@ -77,6 +81,8 @@ export const ROLE_ROUTES = {
     { path: '/admin/dashboard', Component: AdminDashboard },
     { path: '/admin/orders', Component: AdminOrders },
     { path: '/admin/users', Component: AdminUsers },
+    { path: '/admin/users/:role/:id', Component: AdminUserDetails },
+    { path: '/admin/payments', Component: AdminPayments },
     { path: '/admin/settings', Component: AdminSettings },
     { path: '/admin/pricing', Component: AdminPricing },
     { path: '/admin/ledger', Component: AdminLedger },

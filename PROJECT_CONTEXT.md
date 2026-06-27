@@ -1,7 +1,7 @@
 # PROJECT_CONTEXT
 
 ## 1. Project Description
-RUNNA is a campus-first super-app for Nigerian universities. It connects three primary user groups:
+SARUNN is a campus-first super-app for Nigerian universities. It connects three primary user groups:
 
 - Customers can order food and request campus errands.
 - Vendors can manage menus, orders, earnings, and profile details.
@@ -100,7 +100,7 @@ Phase 1 status:
 - Use the existing alias imports with `@/` where the project already does so.
 - Keep route definitions centralized in `src/routes/` and role access in `RoleRoute`.
 - Keep styling aligned with the Material 3 design system in `src/index.css` and `src/style.md`.
-- Reuse the shared local state helpers in `src/lib/runnaStore.js` for campus, cart, and delivery location data.
-- Keep static demo data in `src/lib/runnaData.js` unless it becomes dynamic.
+- Reuse the shared local state helpers in `src/lib/SARUNNStore.js` for campus, cart, and delivery location data.
+- Keep static demo data in `src/lib/SARUNNData.js` unless it becomes dynamic.
 - Prefer small, composable utilities over duplicate logic.
 - Preserve mobile-first behavior and bottom-nav patterns for customer, vendor, and runner experiences.

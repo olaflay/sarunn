@@ -8,6 +8,7 @@ const STATUS_STYLES = {
   delivered:  { bg: '#E8F5E9', color: '#2E7D32', label: 'Delivered' },
   cancelled:  { bg: '#FEECEB', color: '#B3261E', label: 'Cancelled' },
   open:       { bg: '#E3F2FD', color: '#1E7CFF', label: 'Open' },
+  claimed:    { bg: '#EDE7F6', color: '#673AB7', label: 'Claimed' },
   accepted:   { bg: '#F3E5F5', color: '#9333EA', label: 'Accepted' },
   in_progress:{ bg: '#FFF8E1', color: '#F59E0B', label: 'In Progress' },
   completed:  { bg: '#E8F5E9', color: '#2E7D32', label: 'Completed' },

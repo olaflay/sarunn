@@ -38,7 +38,7 @@ export default function CustomerOrders() {
 
   return (
     <RunnaShell>
-      <div className="runna-screen bg-background">
+      <div className="sarunn-screen bg-background">
         {/* Header */}
         <div className="bg-white border-b border-border/40 sticky top-0 z-30">
           <div className="flex items-center justify-between px-4 py-4">

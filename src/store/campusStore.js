@@ -1,7 +1,7 @@
 import { createStore } from '@/store/zustandLite';
 
-const CAMPUS_KEY = 'runna_campus';
-const CAMPUS_EVENT = 'runna:campus';
+const CAMPUS_KEY = 'sarunn_campus';
+const CAMPUS_EVENT = 'sarunn:campus';
 const isClient = typeof window !== 'undefined';
 
 function readCampus() {

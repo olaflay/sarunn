@@ -106,7 +106,7 @@ export default function FoodHome() {
   if (!campusId) {
     return (
       <RunnaShell>
-        <div className="runna-screen flex flex-col items-center justify-center bg-background px-8 text-center">
+        <div className="sarunn-screen flex flex-col items-center justify-center bg-background px-8 text-center">
           <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-muted">
             <MapPin size={28} color="#94a3b8" aria-hidden="true" />
           </div>
@@ -122,7 +122,7 @@ export default function FoodHome() {
 
   return (
     <RunnaShell>
-      <div className="runna-screen bg-background">
+      <div className="sarunn-screen bg-background">
         <header className="sticky top-0 z-30 border-b border-border/40 bg-white/95 backdrop-blur-sm">
           <div className="flex items-center gap-3 px-4 pb-3 pt-4 lg:px-6">
             <button

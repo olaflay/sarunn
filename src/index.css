@@ -6,18 +6,18 @@
 
 @layer base {
   :root {
-    /* RUNNA Brand + MD3 Color System */
-    --runna-primary: #1B2B45;
-    --runna-accent: #3DB04B;
-    --runna-blue: #1E7CFF;
-    --runna-primary-dark: #1561CC;
-    --runna-navy: #1B2B45;
-    --runna-navy-deep: #0F1E35;
-    --runna-surface: #F7F8FA;
-    --runna-white: #FFFFFF;
-    --runna-success: #2E7D32;
-    --runna-error: #B3261E;
-    --runna-warning: #F59E0B;
+    /* SARUNN Brand + MD3 Color System */
+    --sarunn-primary: #1B2B45;
+    --sarunn-accent: #3DB04B;
+    --sarunn-blue: #1E7CFF;
+    --sarunn-primary-dark: #1561CC;
+    --sarunn-navy: #1B2B45;
+    --sarunn-navy-deep: #0F1E35;
+    --sarunn-surface: #F7F8FA;
+    --sarunn-white: #FFFFFF;
+    --sarunn-success: #2E7D32;
+    --sarunn-error: #B3261E;
+    --sarunn-warning: #F59E0B;
 
     /* MD3 Token Mapping */
     --background: 220 20% 97%;
@@ -163,18 +163,18 @@
 }
 
 /* PWA Mobile Shell */
-.runna-shell {
+.sarunn-shell {
   width: 100%;
   min-height: 100dvh;
   height: 100dvh;
   position: relative;
   overflow: hidden;
-  background: var(--runna-surface);
+  background: var(--sarunn-surface);
   display: flex;
   flex-direction: column;
 }
 
-.runna-screen {
+.sarunn-screen {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
@@ -184,13 +184,13 @@
 }
 
 @media (min-width: 768px) {
-  .runna-screen {
+  .sarunn-screen {
     padding-bottom: 0;
     padding-left: 288px;
   }
 }
 
-.runna-screen::-webkit-scrollbar {
+.sarunn-screen::-webkit-scrollbar {
   display: none;
 }
 
@@ -372,14 +372,14 @@
 }
 
 .chip.selected {
-  background: var(--runna-primary);
+  background: var(--sarunn-primary);
   color: white;
-  border-color: var(--runna-primary);
+  border-color: var(--sarunn-primary);
 }
 
 /* Demo Bar */
 .demo-bar {
-  background: var(--runna-navy-deep);
+  background: var(--sarunn-navy-deep);
   padding: calc(8px + env(safe-area-inset-top)) 16px 8px;
   display: flex;
   align-items: center;
@@ -409,7 +409,7 @@
   width: 56px;
   height: 56px;
   border-radius: 18px;
-  background: var(--runna-primary);
+  background: var(--sarunn-primary);
   color: white;
   display: flex;
   align-items: center;
@@ -506,7 +506,7 @@
 }
 
 .md3-input:focus {
-  border-color: var(--runna-primary);
+  border-color: var(--sarunn-primary);
   box-shadow: 0 0 0 3px rgba(30, 124, 255, 0.12);
 }
 

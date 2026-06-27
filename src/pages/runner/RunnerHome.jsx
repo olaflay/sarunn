@@ -169,7 +169,7 @@ export default function RunnerHome() {
 
   return (
     <RunnaShell>
-      <div className="runna-screen bg-background">
+      <div className="sarunn-screen bg-background">
         {/* Header */}
         <div className="navy-gradient px-4 pt-6 pb-8">
           <div className="flex items-center justify-between mb-4">

@@ -1,5 +1,5 @@
 import { createStore } from '@/store/zustandLite';
-import { runnaApi, getCurrentSessionUser } from '@/lib/runnaClient';
+import { sarunnApi, getCurrentSessionUser } from '@/lib/runnaClient';
 import { profileActions } from '@/store/profileStore';
 
 const authDefaults = {
@@ -15,7 +15,7 @@ export const useAuthStore = createStore((set, get) => ({
   bootstrap: async () => {
     set({ isLoadingAuth: true });
     try {
-      const currentUser = await runnaApi.auth.me();
+      const currentUser = await sarunnApi.auth.me();
       set({
         user: currentUser,
         isAuthenticated: true,
@@ -51,7 +51,7 @@ export const useAuthStore = createStore((set, get) => ({
     return get().bootstrap();
   },
   login: async (email, password) => {
-    const user = await runnaApi.auth.loginViaEmailPassword(email, password);
+    const user = await sarunnApi.auth.loginViaEmailPassword(email, password);
     set({
       user,
       isAuthenticated: true,
@@ -62,9 +62,9 @@ export const useAuthStore = createStore((set, get) => ({
     profileActions.syncFromUser(user);
     return user;
   },
-  register: async (payload) => runnaApi.auth.register(payload),
+  register: async (payload) => sarunnApi.auth.register(payload),
   verifyOtp: async (payload) => {
-    const result = await runnaApi.auth.verifyOtp(payload);
+    const result = await sarunnApi.auth.verifyOtp(payload);
     set({
       user: result.user,
       isAuthenticated: true,
@@ -75,12 +75,12 @@ export const useAuthStore = createStore((set, get) => ({
     profileActions.syncFromUser(result.user);
     return result;
   },
-  resendOtp: async (email) => runnaApi.auth.resendOtp(email),
-  requestPasswordReset: async (email) => runnaApi.auth.resetPasswordRequest(email),
-  resetPassword: async (payload) => runnaApi.auth.resetPassword(payload),
-  loginWithProvider: async (redirect = '/customer/home') => runnaApi.auth.loginWithProvider(redirect),
+  resendOtp: async (email) => sarunnApi.auth.resendOtp(email),
+  requestPasswordReset: async (email) => sarunnApi.auth.resetPasswordRequest(email),
+  resetPassword: async (payload) => sarunnApi.auth.resetPassword(payload),
+  loginWithProvider: async (redirect = '/customer/home') => sarunnApi.auth.loginWithProvider(redirect),
   logout: (shouldRedirect = true) => {
-    runnaApi.auth.logout(shouldRedirect ? '/login' : undefined);
+    sarunnApi.auth.logout(shouldRedirect ? '/login' : undefined);
     set({ ...authDefaults, isLoadingAuth: false, authChecked: true });
   },
   setAuthError: (authError) => set({ authError }),

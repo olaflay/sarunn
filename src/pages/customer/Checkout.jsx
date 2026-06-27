@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, MapPin, CreditCard, Landmark, ShoppingCart, AlertTriangle, ChevronRight } from 'lucide-react';
-import { runnaApi } from '@/lib/runnaClient';
+import { sarunnApi } from '@/lib/runnaClient';
 import RunnaShell from '@/components/RunnaShell';
 import Snackbar from '@/components/Snackbar';
 import DeliveryLocationPicker from '@/components/customer/DeliveryLocationPicker';
@@ -44,7 +44,7 @@ export default function Checkout() {
   if (!group) {
     return (
       <RunnaShell>
-        <div className="runna-screen bg-background flex flex-col items-center justify-center px-6 text-center">
+        <div className="sarunn-screen bg-background flex flex-col items-center justify-center px-6 text-center">
           <div className="mb-4 text-5xl" aria-hidden="true">🛒</div>
           <h3 className="font-heading text-base font-bold text-foreground">Nothing to check out</h3>
           <p className="mb-6 text-sm text-muted-foreground">Your cart for this vendor is empty.</p>
@@ -72,7 +72,7 @@ export default function Checkout() {
         quantity: item.qty,
       }));
 
-      await runnaApi.entities.Order.create({
+      await sarunnApi.entities.Order.create({
         customer_id: 'demo_customer',
         vendor_id: 'demo_vendor',
         vendor_ref: vendor.id || vendorId,
@@ -111,7 +111,7 @@ export default function Checkout() {
 
   return (
     <RunnaShell>
-      <div className="runna-screen bg-background">
+      <div className="sarunn-screen bg-background">
         <header className="sticky top-0 z-20 border-b border-border/40 bg-white/95 backdrop-blur-sm">
           <div className="flex items-center gap-3 px-4 py-4 lg:px-6">
             <button

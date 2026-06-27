@@ -40,7 +40,7 @@ export default function BottomNav({ role }) {
   return (
     <nav className="bottom-nav" aria-label={`${role} navigation`}>
       <div className="hidden md:flex md:flex-col md:gap-1 md:mb-4 md:px-3">
-        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">Runna</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">Sarunn</p>
         <p className="text-lg font-semibold tracking-tight text-foreground">
           {role.charAt(0).toUpperCase() + role.slice(1)}
         </p>

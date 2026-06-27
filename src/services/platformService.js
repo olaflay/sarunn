@@ -1,8 +1,8 @@
 import { clearCart, clearDeliveryLocation } from '@/services/storageService';
 import { getMenu, getLocationLabel, VENDORS } from '@/services/catalogService';
 
-const STATE_KEY = 'runna_runtime_state_v1';
-const SESSION_KEY = 'runna_session_token';
+const STATE_KEY = 'sarunn_runtime_state_v1';
+const SESSION_KEY = 'sarunn_session_token';
 const DEMO_PASSWORD = 'demo1234';
 
 const now = () => new Date().toISOString();
@@ -11,7 +11,7 @@ const randomId = () => (globalThis.crypto?.randomUUID ? globalThis.crypto.random
 const demoUsers = [
   {
     id: 'user_customer',
-    email: 'customer@runna.app',
+    email: 'customer@sarunn.app',
     password: DEMO_PASSWORD,
     role: 'customer',
     full_name: 'Adaeze Okafor',
@@ -21,7 +21,7 @@ const demoUsers = [
   },
   {
     id: 'user_vendor',
-    email: 'vendor@runna.app',
+    email: 'vendor@sarunn.app',
     password: DEMO_PASSWORD,
     role: 'vendor',
     full_name: 'Burger Palace',
@@ -31,7 +31,7 @@ const demoUsers = [
   },
   {
     id: 'user_runner',
-    email: 'runner@runna.app',
+    email: 'runner@sarunn.app',
     password: DEMO_PASSWORD,
     role: 'runner',
     full_name: 'Chidi Obi',
@@ -41,10 +41,10 @@ const demoUsers = [
   },
   {
     id: 'user_admin',
-    email: 'admin@runna.app',
+    email: 'admin@sarunn.app',
     password: DEMO_PASSWORD,
     role: 'admin',
-    full_name: 'Runna Admin',
+    full_name: 'Sarunn Admin',
     phone: '+234 800 000 0004',
     campus_id: 'lasu-epe',
     verified: true,
@@ -228,7 +228,7 @@ function listRecords(records, sort, limit) {
 
 function seedUserSession(user) {
   ensureStateShape();
-  const token = `runna_${randomId()}`;
+  const token = `sarunn_${randomId()}`;
   state.sessions[token] = user.id;
   setSessionToken(token);
   persistState();
@@ -283,11 +283,11 @@ function createErrand(data) {
 function buildDefaultProfileForRole(role) {
   if (role === 'vendor') return { full_name: 'New Vendor', campus_id: 'lasu-epe' };
   if (role === 'runner') return { full_name: 'New Runner', campus_id: 'lasu-epe' };
-  if (role === 'admin') return { full_name: 'Runna Admin', campus_id: 'lasu-epe' };
+  if (role === 'admin') return { full_name: 'Sarunn Admin', campus_id: 'lasu-epe' };
   return { full_name: 'New Customer', campus_id: 'lasu-epe' };
 }
 
-export const runnaApi = {
+export const sarunnApi = {
   auth: {
     me: async () => {
       const user = currentUserFromSession();

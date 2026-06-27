@@ -23,7 +23,7 @@ export let SERVICES = [
   { id: 'print', label: 'Printing', active: false },
 ];
 
-export let LOCATIONS = loadFromStorage('runna_locations', {
+export let LOCATIONS = loadFromStorage('sarunn_locations', {
   'lasu-epe': [
     { id: 'school-campus', label: 'School Campus', base_fee: 300 },
     { id: 'iraye', label: 'Iraye', base_fee: 400 },
@@ -35,7 +35,7 @@ export let LOCATIONS = loadFromStorage('runna_locations', {
   ],
 });
 
-export let SUB_LOCATIONS = loadFromStorage('runna_sub_locations', {
+export let SUB_LOCATIONS = loadFromStorage('sarunn_sub_locations', {
   'school-campus': [
     { id: 'library', label: 'Library', surcharge: 0 },
     { id: 'mosque', label: 'Mosque', surcharge: 50 },
@@ -159,12 +159,12 @@ export function calculateErrandFee(fromLocationId, toLocationId, toSubLocationId
 
 export function setLocations(newLocations) {
   LOCATIONS = newLocations;
-  if (isClient) localStorage.setItem('runna_locations', JSON.stringify(newLocations));
+  if (isClient) localStorage.setItem('sarunn_locations', JSON.stringify(newLocations));
 }
 
 export function setSubLocations(newSubLocations) {
   SUB_LOCATIONS = newSubLocations;
-  if (isClient) localStorage.setItem('runna_sub_locations', JSON.stringify(newSubLocations));
+  if (isClient) localStorage.setItem('sarunn_sub_locations', JSON.stringify(newSubLocations));
 }
 
 export function getVendor(id) {

@@ -24,7 +24,7 @@ export default function VendorDetail() {
 
   return (
     <RunnaShell>
-      <div className="runna-screen bg-background">
+      <div className="sarunn-screen bg-background">
         {/* Cover + Back */}
         <div className="relative">
           <img src={vendor.cover_url} alt={vendor.store_name} className="w-full h-48 object-cover" />

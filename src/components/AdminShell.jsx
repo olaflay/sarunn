@@ -5,6 +5,7 @@ import NetworkStatusBar from '@/components/NetworkStatusBar';
 
 const NAV = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/admin/dashboard' },
+  { id: 'payments', label: 'Payments', icon: Wallet, path: '/admin/payments' },
   { id: 'ledger', label: 'Ledger', icon: Wallet, path: '/admin/ledger' },
   {
     id: 'users',
@@ -51,7 +52,7 @@ export default function AdminShell({ children }) {
 
   return (
     <div className="w-full min-h-[100dvh] flex items-center justify-center navy-gradient px-0 sm:px-4 py-0 sm:py-4">
-      <div className="runna-shell relative flex flex-col overflow-hidden shadow-[0_24px_80px_rgba(15,23,42,0.24)]">
+      <div className="sarunn-shell relative flex flex-col overflow-hidden shadow-[0_24px_80px_rgba(15,23,42,0.24)]">
         <NetworkStatusBar />
 
         <header className="flex items-center justify-between border-b border-border/40 bg-white/95 px-4 py-3 backdrop-blur-sm flex-shrink-0">
@@ -91,7 +92,7 @@ export default function AdminShell({ children }) {
         >
           <div className="flex items-center justify-between bg-slate-950 px-5 py-4 text-white">
             <div>
-              <p className="font-heading text-base font-semibold">RUNNA</p>
+              <p className="font-heading text-base font-semibold">SARUNN</p>
               <p className="text-xs text-white/60">Admin Panel</p>
             </div>
             <button
@@ -157,11 +158,11 @@ export default function AdminShell({ children }) {
           </nav>
 
           <div className="border-t border-border/40 p-4 text-center">
-            <p className="text-xs text-muted-foreground">RUNNA v1.0 | Admin</p>
+            <p className="text-xs text-muted-foreground">SARUNN v1.0 | Admin</p>
           </div>
         </aside>
       </div>
-      <p className="absolute bottom-4 hidden text-xs text-white/30 md:block">RUNNA | Admin Panel</p>
+      <p className="absolute bottom-4 hidden text-xs text-white/30 md:block">SARUNN | Admin Panel</p>
     </div>
   );
 }

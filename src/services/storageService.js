@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 
 const isClient = typeof window !== 'undefined';
 
-const CART_KEY = 'runna_cart';
-const CAMPUS_KEY = 'runna_campus';
-const LOC_KEY = 'runna_delivery_loc';
-const CART_EVENT = 'runna:cart';
-const CAMPUS_EVENT = 'runna:campus';
-const LOC_EVENT = 'runna:deliveryloc';
+const CART_KEY = 'sarunn_cart';
+const CAMPUS_KEY = 'sarunn_campus';
+const LOC_KEY = 'sarunn_delivery_loc';
+const CART_EVENT = 'sarunn:cart';
+const CAMPUS_EVENT = 'sarunn:campus';
+const LOC_EVENT = 'sarunn:deliveryloc';
 
 function read(key) {
   if (!isClient) return null;
