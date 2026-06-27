@@ -12,7 +12,6 @@ const FAQS = [
 ];
 
 const CONTACTS = [
-  { id: 'chat', label: 'Live Chat', desc: 'Avg. reply under 2 min', icon: MessageCircle },
   { id: 'call', label: 'Call Us', desc: '+234 800 SARUNN 00', icon: Phone },
   { id: 'email', label: 'Email Support', desc: 'help@sarunn.ng', icon: Mail },
 ];
